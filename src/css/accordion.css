@@ -1,37 +1,71 @@
 /* WHATSOCK, 2016 */
 /* Specific styles for ARIA Accordion */
 
-#accordionGroup dt {
+@font-face {
+  font-family: "FontAwesome";
+  src: url("fontawesome-webfont.eot");
+  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"),
+    url("fontawesome-webfont.woff") format("woff"),
+    url("fontawesome-webfont.ttf") format("truetype"),
+    url("fontawesome-webfont.svg#fontawesome-webfont") format("svg");
+}
+.accordionGroup .accAccordion {
+  color: #333;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.30909;
+  margin-bottom: 0.65455em;
+  margin-top: 0;
+}
+.demo-block .accordionGroup h3 {
+  margin: 0;
+}
+.accordionGroup .content-panel {
+  padding: 1em 2em;
+}
+.accordionGroup .accTitle {
+  margin-bottom: 1px;
+  padding: 0.3rem 0.5rem;
   position: relative;
   text-transform: uppercase;
-  background: #63b7c2;
-  padding: 0.3em 0.5em;
-  margin-bottom: 1px;
 }
-#accordionGroup dd {
-  text-align: center;
+.accordionGroup .accContent {
   background: #fff;
+  text-align: center;
 }
-#accordionGroup dd img {
-  width: 150px;
-  vertical-align: middle;
+.accordionGroup .accAccordion {
+  background-color: #145571;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
   padding: 1rem;
 }
-
-.accAccordion {
-  cursor: pointer;
+.accordionGroup .accAccordion[aria-expanded="true"] {
+  border-top: 6px solid #d95b43;
+}
+.accordionGroup .accAccordion:hover,
+.accordionGroup .accAccordion:focus {
+  background-color: #cee2ea;
+  color: #145571;
+}
+.accordionGroup .accAccordion[aria-expanded="true"]:before {
+  color: #fff;
+  content: "\f077";
+  float: right;
+  font-family: FontAwesome;
 }
 
-.accAccordion .icon {
-  display: block;
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  top: 0.5em;
-  right: 0.5em;
-  background: url(../img/accordion/sprite.svg) right 0 no-repeat;
+.accordionGroup .accAccordion[aria-expanded="true"]:hover:before,
+.accordionGroup .accAccordion[aria-expanded="true"]:focus:before {
+  color: #145571;
 }
-
-.accAccordion.open .icon {
-  background: url(../img/accordion/sprite.svg) right -124px no-repeat;
+.accordionGroup .accAccordion:before {
+  color: #fff;
+  content: "\f078";
+  float: right;
+  font-family: FontAwesome;
+}
+.accordionGroup .accAccordion:hover:before,
+.accordionGroup .accAccordion:focus:before {
+  color: #145571;
 }

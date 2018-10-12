@@ -14,8 +14,8 @@ export function loadAccModalModule() {
         if (!$A.setModal.openModals) $A.setModal.openModals = [];
         $A.on("body", "focusin.AccDCModal", function(ev) {
           if ($A.setModal.openModals.length) {
-            let dc = $A.setModal.openModals[$A.setModal.openModals.length - 1];
-            let containsFocus = $A.query("*:focus", dc.container).length > 0;
+            var dc = $A.setModal.openModals[$A.setModal.openModals.length - 1];
+            var containsFocus = $A.isFocusWithin(dc.container);
             if (!containsFocus) {
               $A(dc.tabDirection ? dc.firstFocus : dc.lastFocus).focus();
             }

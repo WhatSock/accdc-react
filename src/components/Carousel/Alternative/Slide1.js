@@ -5,7 +5,7 @@ class Slide1 extends React.Component {
     return (
       <div class="slide slide1">
         <img
-          src="img/music/ar_et_lts.jpg"
+          src={require("./img/music/ar_et_lts.jpg")}
           alt="Emiliana Torrini - Love in the Time of Science"
           title="Emiliana Torrini - Love in the Time of Science"
         />

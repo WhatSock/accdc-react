@@ -3,9 +3,6 @@ import React from "react";
 let $A = window.AccDC;
 
 class ModalLoginDialog extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   handleClose(ev) {
     $A(this).unmount();
     ev.stopPropagation();

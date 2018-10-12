@@ -389,7 +389,7 @@ export function setTabList(ReactComponent, panels, config) {
 
         var role = $A.getAttr(context, "role");
 
-        if (role && role == "tablist") var tabLists = [context];
+        if (role && role === "tablist") var tabLists = [context];
         else var tabLists = $A.query('*[role="tablist"]', context);
 
         $A.loop(

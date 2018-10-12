@@ -1,0 +1,19 @@
+
+DC.setProps(objectKeyValueMap)
+
+Description: Props allow for custom properties and methods to be added to the DC object without risk of conflicting with internal states, properties, and methods.
+
+Example:
+
+DC.setProps({
+  myState: false,
+  myFunct: function() {
+    // Toggle myState
+    this.myState = !this.myState;
+    // Access the DC object
+    var DC = this.DC;
+    // Do other stuff
+  }
+});
+
+DC.props.myFunct();

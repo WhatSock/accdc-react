@@ -1,0 +1,119 @@
+Description: Content properties configure the type and source of the content being rendered.
+
+Note: Each property may be set declaratively when creating new DC objects, or directly by modifying individual properties on instantiated DC objects.
+
+Declarative Syntax
+
+{
+  PropertyName1: Value1,
+  PropertyName2: Value2
+  // Etc.
+}
+
+Direct Syntax
+
+var Value = DC.PropertyName;
+
+DC.PropertyName = Value;
+
+DC Object Properties
+
+Note: The displayed value for each property represents its default value when omitted.
+
+// Suppress the automatic addition of extra div elements around the source when rendered.
+// Extra divs are added to create accessibility support for widgets and complex interactive structures.
+// For simple structures that don't require these however, these can be suppressed so that only the source is rendered.
+// Important: Must not be plain text, valid elements are required since event bindings will be applied to the source element container.
+// Feature still experimental, file any bugs at: https://github.com/accdc/bootstrap-react
+  sourceOnly: false
+
+// Set the mode to determine the type of the content being rendered.
+// 0 = DC.source includes DOM elements, source code, or plain text to be rendered directly.
+// 1 = perform Load function where DC.source includes an external resource url, and DC.fetch.data is also configured.
+// 2 = perform Get function where DC.source includes an external resource url, DC.fetch.data is also configured, and content must be manually added to DC.content within the Fetch Success callback.
+  mode: 0
+
+// The original source content to load within the DC object when rendered.
+// When mode=0, plain text, markup strings, or DOM nodes can be set as DC.source.
+// When mode=1, DC.source must be set to an external resource URL, and Fetch API properties may be optionally configured.
+// When mode=2, DC.source must be set to an external resource URL, and Fetch API properties must be set to process the external content after it is loaded.
+  source: ""
+
+// Set DC.source content to be converted into a React component object prior to rendering.
+// If successful, the content stored within DC.source will be deleted, and the new object will be stored within DC.React.component.
+  RenderUsingReact: false
+
+// Set a React component object to be rendered within a DC object when loaded.
+// If set, DC.source will be ignored.
+  React: {
+    component: null
+  }
+
+// Fetch API configuration within the DC object.
+  fetch: {
+    // Resource URL.
+    // Will use DC.source if present, otherwise will use DC.fetch.url
+    url: "",
+    data: {
+      // Return type options: "text", "html", "xml", "json"
+      returnType: "html",
+      // CSS selector to parse markup content when loaded into the Success callback function. (Relevant for returnType html or xml)
+      selector: ""
+    },
+    success: function(content, promise, DC) {
+      // When DC.mode=2, the content meant for rendering must be set using DC.content.
+      // E.G. DC.content = "Content for rendering...";
+    },
+    error: function(errorMsg, promise, DC) {   }
+  }
+
+Example 1: Mode 0 with markup string
+
+{
+  id: "UniqueID1",
+  source: '<b> Tooltip text. </b>'
+}
+
+Example 2: Mode 0 with markup string rendered as React object
+
+{
+  id: "UniqueID2",
+  source: '<b> Tooltip text. </b>',
+  RenderUsingReact: true
+}
+
+Example 3: Mode 1 with resource URL plus selector to filter returned content
+
+{
+  id: "UniqueID3",
+  mode: 1,
+  source: "https://server/resource?params",
+  fetch: {
+    data: {
+      returnType: "html",
+      selector: "#help-tooltip-id"
+    },
+    success: function(content, promise, DC) {
+      // Optionally do stuff after specified content is rendered.
+    }
+  }
+}
+
+Example 4: Mode 2 with resource URL plus manual assignment of content to be rendered
+
+{
+  id: "UniqueID4",
+  mode: 2,
+  source: "https://server/resource?params",
+  fetch: {
+    data: {
+      returnType: "json"
+    },
+    success: function(content, promise, DC) {
+      // Parse the "content" JSON object to create markup to render...
+      var myMarkup = parseContent(content);
+      // Then set this new content to be rendered within DC.container
+      DC.content = myMarkup;
+    }
+  }
+}

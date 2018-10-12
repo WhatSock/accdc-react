@@ -44,7 +44,9 @@ class ComboboxOptions extends React.Component {
         <option value="Comoros">Comoros</option>
         <option value="Congo">Congo</option>
         <option value="Congo {Democratic Rep}">
-          Congo {"{"}Democratic Rep{"}"}
+          Congo {"{"}
+          Democratic Rep
+          {"}"}
         </option>
         <option value="Costa Rica">Costa Rica</option>
         <option value="Croatia">Croatia</option>
@@ -86,7 +88,9 @@ class ComboboxOptions extends React.Component {
         <option value="Iran">Iran</option>
         <option value="Iraq">Iraq</option>
         <option value="Ireland {Republic}">
-          Ireland {"{"}Republic{"}"}
+          Ireland {"{"}
+          Republic
+          {"}"}
         </option>
         <option value="Israel">Israel</option>
         <option value="Italy">Italy</option>
@@ -132,7 +136,9 @@ class ComboboxOptions extends React.Component {
         <option value="Myanmar">Myanmar</option>
         <option value=" {Burma}">
           {" "}
-          {"{"}Burma{"}"}
+          {"{"}
+          Burma
+          {"}"}
         </option>
         <option value="Namibia">Namibia</option>
         <option value="Nauru">Nauru</option>

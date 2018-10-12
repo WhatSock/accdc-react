@@ -1,6 +1,23 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Accordions
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render accordion content.
+
+3. Using a native button or link as triggering elements, add a data-accordiongroup attribute to all shared accordion triggering elements.
+
+4. Ensure all triggering elements include a unique ID attribute, as well as all DOM container elements where each accordion component will be rendered.
+
+5. Add a data-insert attribute to each triggering element, and ensure its value matches the ID attribute of the associated container element.
+
+6. Add a data-defaultopen="true" attribute to the triggering element of any accordion that is meant to open when first loaded.
+
+7. Add a data-controls attribute to each triggering element and make sure the name of the attribute matches the object property name of the related React component as submitted to setAccordion().
+*/
+
 // Import all React component regions controlled by this accordion
 import AlternativeRock from "./Alternative/AlternativeRock";
 import Classical from "./Classical/Classical";
@@ -44,8 +61,8 @@ class AccordionMain extends React.Component {
           </p>
         </div>
         <div className="intro tal viewport demo-block">
-          <dl id="accordionGroup">
-            <dt role="heading" aria-level={3} className="clearfix">
+          <div className="accordionGroup">
+            <h3>
               <button
                 className="accAccordion"
                 data-controls="Alternative"
@@ -54,12 +71,11 @@ class AccordionMain extends React.Component {
                 data-accordiongroup="musicAccordion"
                 id="accordion1id"
               >
-                <span className="icon" />
-                <span className="lbl">Alternative Rock</span>
+                Alternative Rock
               </button>
-            </dt>
-            <dd id="sect1" />
-            <dt role="heading" aria-level={3} className="clearfix">
+            </h3>
+            <div id="sect1" />
+            <h3>
               <button
                 className="accAccordion"
                 data-controls="Classical"
@@ -67,12 +83,11 @@ class AccordionMain extends React.Component {
                 data-accordiongroup="musicAccordion"
                 id="accordion2id"
               >
-                <span className="icon" />
-                <span className="lbl">Classical Composers</span>
+                Classical Composers
               </button>
-            </dt>
-            <dd id="sect2" />
-            <dt role="heading" aria-level={3} className="clearfix">
+            </h3>
+            <div id="sect2" />
+            <h3>
               <button
                 className="accAccordion"
                 data-controls="Rock"
@@ -80,12 +95,11 @@ class AccordionMain extends React.Component {
                 data-accordiongroup="musicAccordion"
                 id="accordion3id"
               >
-                <span className="icon" />
-                <span className="lbl">Hard Rock</span>
+                Hard Rock
               </button>
-            </dt>
-            <dd id="sect3" />
-          </dl>
+            </h3>
+            <div id="sect3" />
+          </div>
         </div>
         <div className="intro tal keyboard">
           <p>The accordion controls are keyboard accessible:</p>

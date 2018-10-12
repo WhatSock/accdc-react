@@ -37,7 +37,7 @@ export function loadAccAccordionModule() {
                 },
                 keydown: function(ev, dc) {
                   var k = ev.which || ev.keyCode;
-                  if (k == 13 || k == 32) {
+                  if (k === 13 || k === 32) {
                     $A.trigger(this, "activateaccordion");
                     ev.stopPropagation();
                     ev.preventDefault();

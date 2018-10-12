@@ -55,6 +55,7 @@ export function loadAccTabsModule() {
               exposeHiddenClose: false,
               on: "activatetab",
               isTab: true,
+              isToggle: false,
               allowMultiple: false,
               allowCascade: true,
               widgetType: "AccDCTabs",
@@ -74,7 +75,6 @@ export function loadAccTabsModule() {
                 $A.loop(
                   tabs,
                   function(j, tab) {
-                    if (tab !== dc.triggerObj) $A.remClass(tab, dc.toggleClass);
                     $A.setAttr(tab, {
                       "aria-selected": tab === dc.triggerObj ? "true" : "false",
                       "aria-expanded": tab === dc.triggerObj ? "true" : "false"
@@ -82,13 +82,12 @@ export function loadAccTabsModule() {
                   },
                   "array"
                 );
-                $A.addClass(dc.triggerObj, dc.toggleClass);
 
                 if (callback && typeof callback === "function")
                   callback.apply(dc.triggerObj, [dc, dc.loaded]);
 
                 if (dc.scrollIntoView) {
-                  let contentY = dc.container.offsetTop;
+                  var contentY = dc.container.offsetTop;
                   window.scroll({
                     top: contentY,
                     behavior: "smooth"
@@ -96,7 +95,6 @@ export function loadAccTabsModule() {
                 }
               },
               runAfterClose: function(dc) {
-                $A.remClass(dc.triggerObj, dc.toggleClass);
                 $A.setAttr(dc.triggerObj, {
                   "aria-selected": "false",
                   "aria-expanded": "false",
@@ -143,19 +141,24 @@ export function loadAccTabsModule() {
             nodes: tabs,
             orientation: orientation,
             autoLoop: true,
-            onClick: function(ev, tabNode, RTI, childRTI, abortForArrows) {
+            onOpen: function(
+              ev,
+              tabNode,
+              RTI,
+              childRTI,
+              wasTriggeredWithArrowKey
+            ) {
               if (!$A.data(tabNode, "disabled")) {
-                if (!abortForArrows) {
+                if (!wasTriggeredWithArrowKey) {
                   var dc = RTI.boundDC;
-                  if (dc) dc.scrollIntoView = true;
+                  dc.scrollIntoView = (dc && $A.isTouch()) || false;
                   $A.trigger(tabNode, "activatetab");
                 }
               }
             },
-            onSpace: function(ev, tabNode, RTI) {
+            onSpace: function(ev, tabNode, RTI, childRTI) {
               if (!$A.data(tabNode, "disabled")) {
                 var dc = RTI.boundDC;
-                if (dc) dc.scrollIntoView = true;
                 $A.trigger(tabNode, "activatetab");
               }
             }

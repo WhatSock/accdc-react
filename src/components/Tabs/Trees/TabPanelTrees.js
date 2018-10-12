@@ -6,9 +6,9 @@ class TabPanelTrees extends React.Component {
       <div id="tab3content">
         <figure>
           <img
-            src="../../../img/tabs/trees.jpg"
-            alt="Trees and fall foliage, hopland, ca"
-            title="Trees and fall foliage, hopland, ca"
+            alt="Trees and fall foliage, hopland, c"
+            title="Trees and fall foliage, hopland, c"
+            src={require("../../../img/tabs/trees.jpg")}
           />
           <figcaption>(photography by C. Wallenstein Garaventa)</figcaption>
         </figure>

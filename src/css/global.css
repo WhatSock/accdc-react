@@ -252,12 +252,15 @@ a:hover {
   text-decoration: none;
   background: transparent;
 }
-
+/**************
+ Moved to tabs.css and commented out. Not required.
+***************/
+/*
 *:focus:not(*[role="tabpanel"]) {
   color: #000;
   background: #fc0;
 }
-
+*/
 img {
   max-width: 100%;
   border: none;

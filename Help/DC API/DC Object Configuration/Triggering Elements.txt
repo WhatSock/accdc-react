@@ -1,0 +1,81 @@
+Description: Triggering element properties control the assignment and behaviors of DC object triggering elements.
+
+Note: Each property must be set declaratively when creating new DC objects, otherwise event bindings will not be created when the DC object is instantiated.
+
+Declarative Syntax
+
+{
+  PropertyName1: Value1,
+  PropertyName2: Value2
+  // Etc.
+}
+
+DC Object Properties
+
+Note: The displayed value for each property represents its default value when omitted. Regarding accessibility, all triggering elements should include valid active element roles to ensure accessibility for screen reader users, and also be keyboard accessible whenever bound to a click event. The dblclick event should never be used as the sole means for activating a triggering element.
+
+// Suppress the automatic addition of keyboard accessibility support attributes and handlers for a triggering element.
+// This occurs when a non-focusable triggering element is bound by a click or dblclick event, which breaks keyboard accessibility.
+// When detected, tabindex=0 is added, plus a redundant key event handler to perform the same action as the click when Enter is pressed.
+// The suppressClickSupport property can be used to prevent this modification when necessary however.
+  suppressClickSupport: false
+
+// Set one or more triggering elements for a DC object.
+// The 'trigger' property may reference a DOM element, or reference one or more elements using a CSS selector.
+  trigger: ""
+
+// The 'triggerObj' property is auto-populated when an active element specified by 'trigger' is set.
+// If set declaratively however, it will perform the same action as the 'trigger' property.
+// Unlike 'trigger' however, The 'triggerObj' property will always be automatically updated to reference the DOM element that was explicitly activated.
+// Thus making it possible to reference this object later using DC.triggerObj.
+  triggerObj: null
+
+// Manually set a different DOM element to insert a DC object after when rendered.
+// This is for addressing issues when a DC object cannot be practically inserted after the triggering element.
+// So, instead, 'targetObj' will pretend to be the triggering element for the purpose of DOM insertion.
+  targetObj: null
+
+// Set one or more event bindings to trigger the opening process of a DC object.
+// All event bindings specified using the 'on' property are bound to the triggering element specified declaratively using 'trigger' or 'triggerObj'.
+// Individual events must be added using just the name of the event in lowercase: "click"
+// Or, multiple events may be added by seperating each with a space: "click focus"
+// Additionally, the 'on' property may consist of a key value map of event:handler syntax declarations.
+// Event namespacing syntax is also supported, as documented within $A API/Events.
+  on: ""
+
+Example 1: Set a triggering element with a basic click handler to open.
+
+{
+  id: "UniqueID1",
+  trigger: "button.login",
+  on: "click"
+}
+
+Example 2: Set a triggering element with multiple events to open.
+
+{
+  id: "UniqueID2",
+  trigger: "button.help-tooltip",
+  on: "click focus"
+}
+
+Example 3: Set a block of events to manage variable functionality on a triggering element.
+
+{
+  id: "UniqueID3",
+  trigger: "input.filter",
+  on: {
+    focus: function(event, DC) {
+      // Display a temporary help tooltip and insert the DC object with id="AnotherTooltipID" after the triggering element.
+      $A("AnotherTooltipID").after(this);
+    },
+    keyup: function(event, DC) {
+      // Filter results when letters or numbers are typed.
+      // DC references the associated DC object bound to the triggering element.
+      // DC.triggerObj is the triggering element DOM node.
+    },
+    keydown: function(event, DC) {
+      // Do something when Enter or the Up/Down arrow keys are pressed.
+    }
+  }
+}

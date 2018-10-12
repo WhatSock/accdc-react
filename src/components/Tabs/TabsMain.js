@@ -1,6 +1,25 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Tabs
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render tab content.
+
+3. Ensure that all Tab triggering elements include role="tab", and that the container element for these grouped controls includes role="tablist". Never nest role="tablist" containers.
+
+4. Ensure all triggering elements include a unique ID attribute, as well as all DOM container elements where each tab component will be rendered.
+
+5. Add a data-insert attribute to each triggering element, and ensure its value matches the ID attribute of the associated container element.
+
+6. Add a data-defaultopen="true" attribute to the triggering element of any tab that is meant to open when first loaded.
+
+7. Add a data-controls attribute to each triggering element and make sure the name of the attribute matches the object property name of the related React component as submitted to setTabList().
+
+IMPORTANT: To ensure proper functionality when creating ARIA Tabs, enable Visual ARIA and then use the keyboard to verify that all roles and focus handling is done correctly in accordance with the ARIA spec.
+*/
+
 // Import all React component TabPanels controlled by this Tablist
 import Grapes from "./Grapes/TabPanelGrapes";
 import Sculpture from "./Sculpture/TabPanelSculpture";

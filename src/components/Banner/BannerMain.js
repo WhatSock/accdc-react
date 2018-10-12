@@ -1,6 +1,19 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Banners
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render banner content.
+
+3. Designate an empty container element somewhere on the page where the banner React component will be inserted, and give that element a class of "accBanner". (className="accBanner")
+
+4. Ensure the accBanner container element includes a unique ID attribute.
+
+5. Add a data-controls attribute to the accBanner container element and make sure the name of the attribute matches the object property name of the related React component as submitted to setBanner().
+*/
+
 // Import the React Banner component that will be dynamically rendered
 import FloaterMSG from "./Banner/Banner";
 

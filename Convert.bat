@@ -1,1 +1,0 @@
-(call html2react "./tempfiles/**/*.{htm,html}")

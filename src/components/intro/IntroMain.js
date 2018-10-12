@@ -121,8 +121,7 @@ class IntroMain extends React.Component {
               </a>
             </li>
             <li>
-              <strong>The AccDC API (Standalone)</strong>
-              [{" "}
+              <strong>The AccDC API (Standalone)</strong>[{" "}
               <a target="custom" href="https://github.com/whatsock/accdc">
                 GitHub
               </a>{" "}
@@ -136,8 +135,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>The AccDC API (for jQuery)</strong>
-              [{" "}
+              <strong>The AccDC API (for jQuery)</strong>[{" "}
               <a
                 target="custom"
                 href="https://github.com/whatsock/accdc-jquery"
@@ -154,8 +152,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>The AccDC API (for Dojo)</strong>
-              [{" "}
+              <strong>The AccDC API (for Dojo)</strong>[{" "}
               <a target="custom" href="https://github.com/whatsock/accdc-dojo">
                 GitHub
               </a>{" "}
@@ -169,8 +166,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>The AccDC API (for MooTools)</strong>
-              [{" "}
+              <strong>The AccDC API (for MooTools)</strong>[{" "}
               <a
                 target="custom"
                 href="https://github.com/whatsock/accdc-mootools"
@@ -187,8 +183,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>AccDC Bootstrap (Standalone)</strong>
-              [{" "}
+              <strong>AccDC Bootstrap (Standalone)</strong>[{" "}
               <a target="custom" href="https://github.com/whatsock/bootstrap">
                 GitHub
               </a>{" "}
@@ -202,8 +197,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>AccDC Bootstrap (for jQuery)</strong>
-              [{" "}
+              <strong>AccDC Bootstrap (for jQuery)</strong>[{" "}
               <a
                 target="custom"
                 href="https://github.com/whatsock/bootstrap-jquery"
@@ -220,8 +214,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>AccDC Bootstrap (for Dojo)</strong>
-              [{" "}
+              <strong>AccDC Bootstrap (for Dojo)</strong>[{" "}
               <a
                 target="custom"
                 href="https://github.com/whatsock/bootstrap-dojo"
@@ -238,8 +231,7 @@ class IntroMain extends React.Component {
               ]
             </li>
             <li>
-              <strong>AccDC Bootstrap (for MooTools)</strong>
-              [{" "}
+              <strong>AccDC Bootstrap (for MooTools)</strong>[{" "}
               <a
                 target="custom"
                 href="https://github.com/whatsock/bootstrap-mootools"
