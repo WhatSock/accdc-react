@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write './src/**/*.{js,css,json}' & js-beautify -r --type=html ./public/index.html"
   },
   "rnpm": {
     "assets": [
@@ -31,6 +32,7 @@
     ]
   },
   "devDependencies": {
+    "js-beautify": "^1.8.8",
     "prettier": "^1.12.1"
   }
 }
