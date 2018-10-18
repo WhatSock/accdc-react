@@ -1822,10 +1822,9 @@ export function loadAccCalendarModule() {
                       if (!$A.data(dc.buttons.nM, "disabled"))
                         dc.buttons.nM.focus();
                       else
-                        $A.query(
-                          'td.day[tabindex="0"]',
-                          dc.container
-                        )[0].focus();
+                        $A
+                          .query('td.day[tabindex="0"]', dc.container)[0]
+                          .focus();
 
                       ev.preventDefault();
                     } else if (
@@ -1845,10 +1844,9 @@ export function loadAccCalendarModule() {
                       )
                         dc.buttons.pY.focus();
                       else
-                        $A.query(
-                          'td.day[tabindex="0"]',
-                          dc.container
-                        )[0].focus();
+                        $A
+                          .query('td.day[tabindex="0"]', dc.container)[0]
+                          .focus();
 
                       ev.preventDefault();
                     }
@@ -1909,10 +1907,9 @@ export function loadAccCalendarModule() {
                       )
                         dc.buttons.pY.focus();
                       else
-                        $A.query(
-                          'td.day[tabindex="0"]',
-                          dc.container
-                        )[0].focus();
+                        $A
+                          .query('td.day[tabindex="0"]', dc.container)[0]
+                          .focus();
 
                       ev.preventDefault();
                     }
@@ -1961,10 +1958,9 @@ export function loadAccCalendarModule() {
                         else if (!$A.data(dc.buttons.nM, "disabled"))
                           dc.buttons.nM.focus();
                         else
-                          $A.query(
-                            'td.day[tabindex="0"]',
-                            dc.container
-                          )[0].focus();
+                          $A
+                            .query('td.day[tabindex="0"]', dc.container)[0]
+                            .focus();
 
                         ev.preventDefault();
                       } else if (
@@ -1973,10 +1969,9 @@ export function loadAccCalendarModule() {
                         !pressed.ctrl &&
                         pressed.shift
                       ) {
-                        $A.query(
-                          'td.day[tabindex="0"]',
-                          dc.container
-                        )[0].focus();
+                        $A
+                          .query('td.day[tabindex="0"]', dc.container)[0]
+                          .focus();
                         ev.preventDefault();
                       }
                     },
@@ -2022,10 +2017,9 @@ export function loadAccCalendarModule() {
                         else if (!$A.data(dc.buttons.nM, "disabled"))
                           dc.buttons.nM.focus();
                         else
-                          $A.query(
-                            'td.day[tabindex="0"]',
-                            dc.container
-                          )[0].focus();
+                          $A
+                            .query('td.day[tabindex="0"]', dc.container)[0]
+                            .focus();
 
                         ev.preventDefault();
                       } else if (
@@ -2037,10 +2031,9 @@ export function loadAccCalendarModule() {
                         if (!$A.data(dc.buttons.pY, "disabled"))
                           dc.buttons.pY.focus();
                         else
-                          $A.query(
-                            'td.day[tabindex="0"]',
-                            dc.container
-                          )[0].focus();
+                          $A
+                            .query('td.day[tabindex="0"]', dc.container)[0]
+                            .focus();
 
                         ev.preventDefault();
                       }
@@ -2304,16 +2297,18 @@ export function loadAccCalendarModule() {
 
                   dc.css("left", dc.parent.outerNode.offsetLeft);
                 }
-                $A.setAttr(dc.textarea, {
-                  title:
-                    dc.parent.range.current.mDay +
-                    ", " +
-                    dc.parent.range.wDays[dc.parent.range.current.wDay].lng +
-                    " " +
-                    dc.parent.range[dc.parent.range.current.month].name +
-                    " " +
-                    dc.parent.range.current.year
-                }).focus();
+                $A
+                  .setAttr(dc.textarea, {
+                    title:
+                      dc.parent.range.current.mDay +
+                      ", " +
+                      dc.parent.range.wDays[dc.parent.range.current.wDay].lng +
+                      " " +
+                      dc.parent.range[dc.parent.range.current.month].name +
+                      " " +
+                      dc.parent.range.current.year
+                  })
+                  .focus();
 
                 if (
                   dc.comments[dc.parent.range.current.year] &&
@@ -2352,7 +2347,8 @@ export function loadAccCalendarModule() {
                     ((config.editor && config.editor.role) || "Edit") +
                     " " +
                     $A.reg.get(pId + "commentTooltip").role
-                }).innerHTML = (config.editor && config.editor.role) || "Edit";
+                }).innerHTML =
+                  (config.editor && config.editor.role) || "Edit";
               }
             },
             runAfter: function(dc) {
