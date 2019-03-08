@@ -1,6 +1,15 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Modals
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render modal content.
+
+3. Submit React modal objects to setModal() with relevant behavioral settings as desired.
+*/
+
 // Import the React Modal components that will be dynamically rendered
 import LoginDialog from "./Login/ModalLoginDialog";
 import TimeoutDialog from "./SessionTimeout/ModalSessionTimeoutDialog";

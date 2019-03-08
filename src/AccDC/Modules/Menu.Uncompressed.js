@@ -12,8 +12,8 @@ export function loadAccMenuModule() {
       setMenu: function(menuMap, context, overrides, disableAutoFocus) {
         $A.on("body", "focusin.AccDCMenu", function(ev) {
           if ($A.setMenu.current && $A.setMenu.current.top.loaded) {
-            let dc = $A.setMenu.current.top;
-            let containsFocus = $A.query("*:focus", dc.container).length > 0;
+            var dc = $A.setMenu.current.top;
+            var containsFocus = $A.isFocusWithin(dc.container);
             if (!containsFocus) {
               dc.close();
             }
@@ -105,6 +105,7 @@ export function loadAccMenuModule() {
                     },
                     isTab: true,
                     isToggle: true,
+                    allowMultiple: false,
                     exposeBounds: false,
                     allowCascade: true,
                     forceFocus: false,
@@ -212,7 +213,7 @@ export function loadAccMenuModule() {
                 });
 
                 if (!$A.data(o, "isMenuTrigger")) {
-                  let lDC = $A.lastLoaded;
+                  var lDC = $A.lastLoaded;
                   $A.on(o, {
                     activatemenuitem: function(ev) {
                       if (lDC && lDC.widgetType === "AccDCMenu") {
@@ -272,20 +273,35 @@ export function loadAccMenuModule() {
               orientation: orientation,
               autoLoop: true,
               dc: $A.lastLoaded,
-              onClick: function(ev, triggerNode, RTI, childRTI) {
+              onOpen: function(
+                ev,
+                triggerNode,
+                RTI,
+                childRTI,
+                wasTriggeredWithArrowKey
+              ) {
                 openMenu.apply(this, arguments);
               },
-              onOpen: function(ev, triggerNode, RTI, childRTI, abortForArrows) {
-                openMenu.apply(this, arguments);
-              },
-              onClose: function(ev, focusedNode, RTI, parentRTI) {
+              onClose: function(
+                ev,
+                focusedNode,
+                RTI,
+                parentRTI,
+                parentTriggeringElement,
+                wasTriggeredWithArrowKey
+              ) {
                 var pDC = RTI.dc && RTI.dc.parent;
-                if (pDC && pDC.widgetType === "AccDCMenu") {
+                if (
+                  wasTriggeredWithArrowKey &&
+                  pDC &&
+                  pDC.widgetType === "AccDCMenu"
+                ) {
                   RTI.dc.close();
-                }
-              },
-              onEsc: function(ev, focusedNode, RTI, parentRTI) {
-                if (RTI.dc) {
+                } else if (
+                  !wasTriggeredWithArrowKey &&
+                  (ev.which || ev.keyCode) === 27 &&
+                  RTI.dc
+                ) {
                   RTI.dc.close();
                 }
               }

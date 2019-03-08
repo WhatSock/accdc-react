@@ -1,6 +1,21 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Menus
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render menu content.
+
+3. Using a native button or link as triggering elements, add the attribute aria-haspopup="true" on all triggering elements that will open attached menus. All menu item active elements must include role="menuitem", "menuitemcheckbox", or "menuitemradio" to be ARIA compliant. No other active element types are supported within the container elements for role="menu" or role="menubar" other than sub-constructs of the same ARIA Menu widget type.
+
+4. Ensure all menu triggering elements include a unique ID attribute.
+
+5. Add a data-controls attribute to each triggering element and make sure the name of the attribute matches the object property name of the related React component as submitted to setMenu().
+
+IMPORTANT: To ensure proper functionality when creating ARIA Menus, enable Visual ARIA and then use the keyboard to verify that all roles and focus handling is done correctly in accordance with the ARIA spec.
+*/
+
 // Import the React Menu components that will be dynamically rendered
 import Menu from "./Vertical/MenuOptions";
 import MenuBar from "./Horizontal/MenuBarOptions";
@@ -65,7 +80,6 @@ class MenusMain extends React.Component {
               id="menuBtn1"
               aria-haspopup="true"
               className="accMenu menu2"
-              aria-haspopup="true"
               data-controls="OptionsMenuBar"
               data-containerclassname="foMenu"
             >
@@ -79,7 +93,6 @@ class MenusMain extends React.Component {
               id="menuBtn2"
               aria-haspopup="true"
               className="accMenu menu"
-              aria-haspopup="true"
               data-controls="OptionsMenu"
               data-containerclassname="menu"
             >

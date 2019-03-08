@@ -5,25 +5,25 @@ class AlternativeRock extends React.Component {
     return (
       <div id="accordion-sect1" className="content-panel">
         <p>
-        <img
-          src={require('../../../img/accordion/ar_et_lts.jpg')} 
-          alt="Emiliana Torrini - Love in the Time of Science"
-          title="Emiliana Torrini - Love in the Time of Science"
-        />
+          <img
+            src={require("../../../img/music/ar_et_lts.jpg")}
+            alt="Emiliana Torrini - Love in the Time of Science"
+            title="Emiliana Torrini - Love in the Time of Science"
+          />
         </p>
         <p>
-        <img
-          src={require('../../../img/accordion/ar_f_ll.jpg')} 
-          alt="Frente - Labour of Love"
-          title="Frente - Labour of Love"
-        />
+          <img
+            src={require("../../../img/music/ar_f_ll.jpg")}
+            alt="Frente - Labour of Love"
+            title="Frente - Labour of Love"
+          />
         </p>
         <p>
-        <img
-          src={require('../../../img/accordion/ar_h_bwpm.jpg')} 
-          alt="Hooverphonic - Blue Wonder Power Milk"
-          title="Hooverphonic - Blue Wonder Power Milk"
-        />
+          <img
+            src={require("../../../img/music/ar_h_bwpm.jpg")}
+            alt="Hooverphonic - Blue Wonder Power Milk"
+            title="Hooverphonic - Blue Wonder Power Milk"
+          />
         </p>
       </div>
     );

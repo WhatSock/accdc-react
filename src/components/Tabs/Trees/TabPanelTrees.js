@@ -5,10 +5,10 @@ class TabPanelTrees extends React.Component {
     return (
       <div id="tab3content">
         <figure>
-          <img 
+          <img
             alt="Trees and fall foliage, hopland, c"
-            title="Trees and fall foliage, hopland, c" 
-            src={require('../../../img/tabs/trees.jpg')} 
+            title="Trees and fall foliage, hopland, c"
+            src={require("../../../img/tabs/trees.jpg")}
           />
           <figcaption>(photography by C. Wallenstein Garaventa)</figcaption>
         </figure>

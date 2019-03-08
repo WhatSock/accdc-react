@@ -127,15 +127,16 @@ export function setCalendar(ReactComponent, config) {
           i,
           o
         ) {
-          var targ = $A.query("#" + $A.getAttr(o, "data-controls"), context)[0];
-          config.overrides = config.overrides || {};
-          $A.extend(config.overrides, {
+          var targ = $A.query("#" + $A.getAttr(o, "data-controls"))[0];
+          $A.extend(true, config, {
             React: {
               parent: ReactComponent
             },
-            RenderUsingReact: true
+            RenderUsingReact: true,
+            root: "body",
+            append: true
           });
-          $A.setCalendar(o.id, o, targ, false, null, config.overrides);
+          $A.setCalendar(o.id, o, targ, false, config.callback, config);
         });
       }
     });
@@ -389,7 +390,7 @@ export function setTabList(ReactComponent, panels, config) {
 
         var role = $A.getAttr(context, "role");
 
-        if (role && role == "tablist") var tabLists = [context];
+        if (role && role === "tablist") var tabLists = [context];
         else var tabLists = $A.query('*[role="tablist"]', context);
 
         $A.loop(

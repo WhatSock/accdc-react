@@ -13,7 +13,7 @@ import "../css/popup.css";
 import "../css/tabs.css";
 
 // Import all React component TabPanels controlled by this Tablist
-import Intro from "./intro/IntroMain";
+import Intro from "./Intro/IntroMain";
 import Accordion from "./Accordion/AccordionMain";
 import Banner from "./Banner/BannerMain";
 import Calendar from "./Calendar/CalendarMain";
@@ -60,7 +60,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-intro"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Intro"
@@ -73,7 +73,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-accordion"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Accordion"
@@ -85,7 +85,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-banner"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Banner"
@@ -97,7 +97,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-calendar"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Calendar"
@@ -109,7 +109,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-carousel"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Carousel"
@@ -121,7 +121,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-combobox"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Combobox"
@@ -133,7 +133,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-footnotes"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Footnotes"
@@ -145,7 +145,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-menu"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Menus"
@@ -157,7 +157,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-modal"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Modal"
@@ -169,7 +169,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-popup"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Popup"
@@ -181,7 +181,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-tabs"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls="Tabs"
@@ -193,7 +193,7 @@ class MainTabList extends React.Component {
           <a
             id="main-tab-unassigned"
             role="tab"
-            href="#"
+            href="#tab"
             className="accTab"
             data-insert="pgContent"
             data-controls=""

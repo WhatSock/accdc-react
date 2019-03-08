@@ -1,6 +1,17 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Footnotes
+
+1. Import AccDC/DC.
+
+2. At the beginning of each footnote definition at the end of the page, add an empty span element, and ensure each span has a unique ID.
+
+3. Surround all words or phrases within the body that are meant to be footnotes with a span element, and ensure that each of these spans includes className="accFootnote", plus a data-footnote attribute that references the ID of the relevant footnote as set in step 2. Multiple footnotes that reference the same ID is supported.
+
+4. Exicute setFootnotes() to set all footnotes as configured.
+*/
+
 class FootnotesMain extends React.Component {
   componentDidMount() {
     strap.setFootnotes(this, {
@@ -46,13 +57,14 @@ backText: 'Back to Footnote'
             TO me going home is returning to the paradisiacal island of{" "}
             <span className="accFootnote" data-footnote="f2">
               Sao Miguel
-            </span>, where at every corner is a discovery and a memory. The
-            valley of Furnas, with the exception of a few road upgrades and
-            Wi-Fi, has remained the same as I always remembered. Furnas is a
-            magical village where volcanic fumaroles, effervescent springs, and
-            geysers are part of the natural landscape. Everywhere the scents of
-            baking bread and fresh fruit mingle with the scent of the ever
-            breathing volcano.
+            </span>
+            , where at every corner is a discovery and a memory. The valley of
+            Furnas, with the exception of a few road upgrades and Wi-Fi, has
+            remained the same as I always remembered. Furnas is a magical
+            village where volcanic fumaroles, effervescent springs, and geysers
+            are part of the natural landscape. Everywhere the scents of baking
+            bread and fresh fruit mingle with the scent of the ever breathing
+            volcano.
           </p>
           <p>
             {" "}
@@ -91,11 +103,12 @@ backText: 'Back to Footnote'
             to the{" "}
             <span className="accFootnote" data-footnote="f4">
               Azores
-            </span>. Furnas is a paradise where the soft clopping of hooves on
-            cobbled streets, the babbling of the brook beneath the mill at
-            twilight, and the smell of fresh baked bread and wild blackberries
-            filling the crisp morning air, call to my heart with a ceaseless
-            whisper to come home.{" "}
+            </span>
+            . Furnas is a paradise where the soft clopping of hooves on cobbled
+            streets, the babbling of the brook beneath the mill at twilight, and
+            the smell of fresh baked bread and wild blackberries filling the
+            crisp morning air, call to my heart with a ceaseless whisper to come
+            home.{" "}
           </p>
           <p>
             <i> (From the travel log of Ana Cristina Wallenstein-Garaventa)</i>

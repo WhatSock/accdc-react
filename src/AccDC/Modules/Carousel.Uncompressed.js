@@ -19,12 +19,12 @@ export function loadAccCarouselModule() {
               uTotalTime = config.duration || 0;
 
             for (var t in targ) {
-              start[t] = parseInt($A.css(ele, t));
+              start[t] = parseInt($A.css(ele, t), 10);
               disp[t] = targ[t] - start[t];
             }
 
             for (var t in targ2) {
-              start2[t] = parseInt($A.css(ele2, t));
+              start2[t] = parseInt($A.css(ele2, t), 10);
               disp2[t] = targ2[t] - start2[t];
             }
             var freq = Math.PI / (2 * uTotalTime),
@@ -150,7 +150,7 @@ export function loadAccCarouselModule() {
                 $A.loop(
                   o.boundId,
                   function(i, id) {
-                    let c = $A.getEl(id);
+                    var c = $A.getEl(id);
                     if (c) {
                       boundIds[id] = o.id;
                       $A.setAttr(c, "aria-current", "false");
@@ -430,18 +430,19 @@ export function loadAccCarouselModule() {
           $A.on("body", "keydown." + bId, function(ev) {
             var k = ev.which || ev.keyCode;
 
-            if (k == 27) {
+            if (k === 27) {
               DC.enableAuto(false);
               ev.preventDefault();
             }
           });
 
-          if (sett.hiddenMsg && !$A.isTouch())
+          if (sett.hiddenMsg && !$A.isTouch()) {
             msgNode = $A("<div>" + sett.hiddenMsg + "</div>")
-              .css($A.sraCSS)
-              .insertBefore(container)
+              .setOffScreen()
+              .before(container)
               .announce()
               .return();
+          }
         }
 
         if (sett.stopRotation) DC.enableAuto(false);

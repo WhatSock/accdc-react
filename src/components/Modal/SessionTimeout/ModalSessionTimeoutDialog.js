@@ -3,16 +3,12 @@ import React from "react";
 let $A = window.AccDC;
 
 class ModalSessionTimeoutDialog extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   handleClose(ev) {
     $A(this).unmount();
     ev.stopPropagation();
     ev.preventDefault();
   }
   handleSubmit(ev) {
-    let form = ev.target;
     $A(this).unmount();
     $A("GlobalLoginDialog").mount();
     ev.preventDefault();

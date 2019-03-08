@@ -1,38 +1,18 @@
 import React from "react";
-import strap from "../../AccDC/DC";
+import DatePicker from "./DatePicker/DatePicker";
+
+/* Directions for Accessible Date Pickers
+
+1. Import general DatePicker object from "./DatePicker/DatePicker.js".
+
+2. Include a target edit field for use as a date picker field on the page, and ensure it has a unique ID. Also specify if it is meant to be read-only or not by adding or omitting the readonly attribute.
+
+3. Add a <DatePicker> element declaration directly after the associated input edit field, and make sure that all of the attributes are properly set within that declaration.
+
+
+*/
 
 class CalendarMain extends React.Component {
-  componentDidMount() {
-    strap.setCalendar(this, {
-      overrides: {
-        inputDateFormat: "MM/DD/YYYY"
-
-        /* Date constant values
-                    YYYY: 4 digit year string
-                    MMMM: Full month name
-                    M: 1 or 2 digit month index value starts with 1
-                    MM: 2 digit month index value starts at 01
-                    dddd: Full weekday name
-                    Do: String with string qualifier such as 1st, 2nd, 3rd, etc.
-                    D: 1 or 2 digit day string starts with 1
-                    DD: 2 digit date string starts with 01
-*/
-
-        /* Do extra stuff if you want
-        runAfter: function(DC) {
-          DC.css({
-            top:
-              DC.outerNode.offsetHeight /
-                window.AccDC.getWindow().height *
-                0.5 *
-                100 +
-              "%"
-          });
-        }
-*/
-      }
-    });
-  }
   render() {
     return (
       <div id="pg-calendar">
@@ -43,69 +23,104 @@ class CalendarMain extends React.Component {
         </div>
         <div className="intro highlight">
           <p>
-            {" "}
             A calendar picker control simplifies the task of selecting dates by
             rendering a miniature calendar.
           </p>
         </div>
-        <div className="intro tal demo-block position-relative">
-          <p>
-            <label htmlFor="date">Set Birth Date:</label>
-            <input id="date" type="text" name="bd" />
-            <a
-              role="button"
-              aria-describedby="date"
-              href="#"
-              id="dateLnk"
-              className="accCalendar datePicker"
-              data-widget="calendar"
-              data-controls="date"
-            >
-              <img
-                src={require('../../img/calendar/calendar-button.svg')} 
-                alt="Birth Date Calendar Picker"
-                title="Birth Date Calendar Picker"
-              />
-            </a>
-          </p>
-          <p>
-            <label htmlFor="party">Set Party Date:</label>
-            <input id="party" type="text" name="pd" />
-            <a
-              role="button"
-              aria-describedby="party"
-              href="#"
-              id="partyLnk"
-              className="accCalendar datePicker"
-              data-widget="calendar"
-              data-controls="party"
-            >
-              <img
-                src={require('../../img/calendar/calendar-button.svg')} 
-                alt="Party Date Calendar Picker"
-                title="Party Date Calendar Picker"
-              />
-            </a>
-          </p>
+        <div className="intro tal demo-block">
+          <div class="insertCalendar">
+            <DatePicker
+              label="Your Birthday:"
+              inputId="date"
+              inputName="bd"
+              triggerId="dateLnk"
+              readOnly="readonly"
+              required="required"
+              config={{
+                callback: function(event, DC, inputElement) {
+                  // Perform a custom callback when a date is activated from the calendar instead of using the default module functionality.
+                  // event is the event object that was passed to this callback, may be either from onClick or onKeyDown or onKeyUp.
+                  // DC is the current calendar DC object instance in the AccDC API (window.AccDC).
+                  // DC.date is the Date instance object for the activated date when chosen.
+
+                  // inputElement is the intended target element for the date string.
+                  inputElement.value = DC.formatDate(DC);
+                  // Close the calendar after saving the formatted date string as desired.
+                  DC.close();
+                  // Set focus to the input field to ensure intuitive keyboard accessibility.
+                  inputElement.focus();
+
+                  // Now dynamically set a disabled date range for the second calendar using the newly saved date as the starting point.
+
+                  // Get a reference to the second calendar's DC object using the 'triggerId' of that element as the reference within AccDC.
+                  var partyDC = window.AccDC("partyLnk");
+
+                  // Set a new initial Date instance for Calendar2 (Party Date)
+                  // Starts with the initial reference to reflect the recently chosen date for Birthday.
+                  partyDC.initialDate = new Date(
+                    DC.date.getFullYear(),
+                    DC.date.getMonth(),
+                    DC.date.getDate()
+                  );
+
+                  // Now set a Date instance as the minimum to start a disabled date range, using partyDC.initialDate as the starting point with -7 days as the offset.
+                  partyDC.minDate = new Date(
+                    DC.date.getFullYear(),
+                    DC.date.getMonth(),
+                    DC.date.getDate() + -7
+                  );
+
+                  // Set a Date instance as the maximum to end a disabled date range, using partyDC.initialDate as the starting point with 7 days ahead as the offset.
+                  partyDC.maxDate = new Date(
+                    DC.date.getFullYear(),
+                    DC.date.getMonth(),
+                    DC.date.getDate() + 7
+                  );
+
+                  // Now, set all of these variables within Calendar2 to configure it without opening it.
+                  partyDC.presetDate(partyDC);
+
+                  // Now make the second calendar actionable since it was initially disabled when first initialized.
+                  partyDC.setDisabled(false);
+                }
+              }}
+            />
+          </div>
+          <div class="insertCalendar">
+            <DatePicker
+              label="Party Date:"
+              inputId="party"
+              inputName="pd"
+              triggerId="partyLnk"
+              readOnly="readonly"
+              disabled="disabled"
+            />
+          </div>
         </div>
         <div className="intro tal keyboard">
           <p>The calendar is keyboard accessible:</p>
           <ul>
             <li>
-              When the calendar is opened, focus is set on the current date.
+              Set focus to the input field to automatically open the calendar,
+              focus will remain on the input field.
             </li>
             <li>
-              Press the <kbd className="left">Left</kbd> and{" "}
+              When the input has focus, press the
+              <kbd className="down">Down</kbd> arrow to set focus on the current
+              date within the calendar.
+            </li>
+            <li>
+              Press the <kbd className="left">Left</kbd> and
               <kbd className="right">Right</kbd> arrow keys to navigate the row
               by week day.
             </li>
             <li>
-              Press the <kbd className="home">Home</kbd> and{" "}
+              Press the <kbd className="home">Home</kbd> and
               <kbd className="end">End</kbd> keys to jump to the beginning or
               end of the current row.
             </li>
             <li>
-              Press the <kbd className="up">Up</kbd> and{" "}
+              Press the <kbd className="up">Up</kbd> and
               <kbd className="down">Down</kbd> arrow keys to navigate between
               weeks on the same week day.
             </li>
@@ -114,14 +129,14 @@ class CalendarMain extends React.Component {
               navigate backwards or forwards by month.
             </li>
             <li>
-              Press{" "}
+              Press
               <kbd>
                 <kbd>Alt</kbd>+<kbd>PageDown</kbd>
-              </kbd>{" "}
-              and{" "}
+              </kbd>
+              and
               <kbd>
                 <kbd>Alt</kbd>+<kbd>PageUp</kbd>
-              </kbd>{" "}
+              </kbd>
               to navigate backwards or forwards by year.
             </li>
             <li>

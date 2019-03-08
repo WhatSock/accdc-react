@@ -5,10 +5,10 @@ class TabPanelSculpture extends React.Component {
     return (
       <div id="tab4content">
         <figure>
-          <img 
+          <img
             alt="Sculpture of a woman on treasure island with San Francisco skyline at night"
-            title="Sculpture of a woman on treasure island with San Francisco skyline at night" 
-            src={require('../../../img/tabs/sculpture.jpg')} 
+            title="Sculpture of a woman on treasure island with San Francisco skyline at night"
+            src={require("../../../img/tabs/sculpture.jpg")}
           />
           <figcaption>(photography by C. Wallenstein Garaventa)</figcaption>
         </figure>

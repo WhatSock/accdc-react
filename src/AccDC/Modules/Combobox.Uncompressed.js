@@ -108,9 +108,9 @@ export function loadAccComboboxModule() {
                   ? combobox.required
                     ? true
                     : false
-                  : $A.getAttr(dc.triggerObj, "aria-required") == "true"
-                    ? true
-                    : false;
+                  : $A.getAttr(dc.triggerObj, "aria-required") === "true"
+                  ? true
+                  : false;
                 dc.cb.multiple = $A.getAttr(dc.cb.sel, "multiple")
                   ? true
                   : false;
@@ -298,7 +298,7 @@ export function loadAccComboboxModule() {
                               $A.trim(nA[y]) &&
                               $A.inArray($A.trim(vA[z]), $A.trim(nA[y])) !==
                                 -1 &&
-                              $A.trim(vA[z]).length == $A.trim(nA[y]).length
+                              $A.trim(vA[z]).length === $A.trim(nA[y]).length
                             ) {
                               nx++;
                               break;
@@ -405,7 +405,7 @@ export function loadAccComboboxModule() {
                       dc.cb.sel
                     ]);
 
-                    if (nv || typeof nv == "string") dc.cb.value = nv;
+                    if (nv || typeof nv === "string") dc.cb.value = nv;
                   } else if (dc.cb.isInput) {
                     if (manual || dc.cb.setDefault)
                       dc.triggerObj.value = dc.cb.value;
@@ -433,7 +433,7 @@ export function loadAccComboboxModule() {
 
                     if (!pass) {
                       option.checked =
-                        $A.getAttr(option.o, "aria-checked") == "true"
+                        $A.getAttr(option.o, "aria-checked") === "true"
                           ? true
                           : false;
                       option.so.selected = option.checked ? "selected" : false;
@@ -460,7 +460,7 @@ export function loadAccComboboxModule() {
                       dc.cb.sel
                     ]);
 
-                    if (nv || typeof nv == "string") dc.cb.value = nv;
+                    if (nv || typeof nv === "string") dc.cb.value = nv;
                   } else if (dc.cb.isInput) {
                     if (manual || dc.cb.setDefault)
                       dc.triggerObj.value = dc.cb.value;
@@ -513,7 +513,7 @@ export function loadAccComboboxModule() {
                     var e = this,
                       k = ev.which || ev.keyCode;
 
-                    if (k == 9) {
+                    if (k === 9) {
                       if (dc.loaded) {
                         if (dc.cb.autoComplete && dc.cb.activeDescendant) {
                           if (!dc.cb.multiple)
@@ -527,7 +527,7 @@ export function loadAccComboboxModule() {
                         that.close();
                       }
                     } else if (
-                      k == 13 &&
+                      k === 13 &&
                       !dc.cb.isInput &&
                       !dc.cb.activeDescendant &&
                       !dc.loaded
@@ -536,7 +536,7 @@ export function loadAccComboboxModule() {
                       ev.preventDefault();
                     } else if (
                       !dc.cb.multiple &&
-                      (k == 13 || k == 32) &&
+                      (k === 13 || k === 32) &&
                       dc.cb.activeDescendant &&
                       dc.loaded
                     ) {
@@ -550,7 +550,7 @@ export function loadAccComboboxModule() {
                       ev.preventDefault();
                     } else if (
                       dc.cb.multiple &&
-                      k == 13 &&
+                      k === 13 &&
                       dc.cb.activeDescendant &&
                       dc.loaded
                     ) {
@@ -561,7 +561,7 @@ export function loadAccComboboxModule() {
                       ev.preventDefault();
                     } else if (
                       dc.cb.multiple &&
-                      k == 32 &&
+                      k === 32 &&
                       dc.cb.activeDescendant &&
                       dc.loaded
                     ) {
@@ -571,12 +571,12 @@ export function loadAccComboboxModule() {
                         $A.getAttr(
                           dc.cb.options[dc.cb.matches[dc.cb.sIndex]].o,
                           "aria-checked"
-                        ) == "true"
+                        ) === "true"
                           ? "false"
                           : "true"
                       );
                       ev.preventDefault();
-                    } else if (k == 38 || k == 40) {
+                    } else if (k === 38 || k === 40) {
                       ev.preventDefault();
                     } else if (
                       dc.cb.readonly &&
@@ -595,10 +595,10 @@ export function loadAccComboboxModule() {
                     var e = this,
                       k = ev.which || ev.keyCode;
 
-                    if (dc.cb.readonly && dc.loaded && (k == 37 || k == 39)) {
+                    if (dc.cb.readonly && dc.loaded && (k === 37 || k === 39)) {
                       ev.preventDefault();
                     } else if (
-                      ((ev.altKey && k == 40) || k == 40) &&
+                      ((ev.altKey && k === 40) || k === 40) &&
                       !dc.cb.activeDescendant &&
                       !dc.loaded &&
                       dc.cb.readonly
@@ -613,7 +613,7 @@ export function loadAccComboboxModule() {
                       that.open();
                       ev.preventDefault();
                     } else if (
-                      ((ev.altKey && k == 40) || k == 40) &&
+                      ((ev.altKey && k === 40) || k === 40) &&
                       !dc.cb.activeDescendant &&
                       dc.loaded &&
                       !dc.cb.readonly
@@ -643,7 +643,11 @@ export function loadAccComboboxModule() {
                         that
                       );
                       ev.preventDefault();
-                    } else if (k == 40 && dc.cb.activeDescendant && dc.loaded) {
+                    } else if (
+                      k === 40 &&
+                      dc.cb.activeDescendant &&
+                      dc.loaded
+                    ) {
                       if (dc.cb.sIndex < dc.cb.matches.length - 1)
                         dc.cb.sIndex++;
                       else dc.cb.sIndex = 0;
@@ -667,7 +671,7 @@ export function loadAccComboboxModule() {
                       ev.preventDefault();
                     } else if (
                       ev.altKey &&
-                      k == 38 &&
+                      k === 38 &&
                       dc.cb.activeDescendant &&
                       dc.loaded
                     ) {
@@ -682,7 +686,11 @@ export function loadAccComboboxModule() {
                       announceVal();
 
                       ev.preventDefault();
-                    } else if (k == 38 && dc.cb.activeDescendant && dc.loaded) {
+                    } else if (
+                      k === 38 &&
+                      dc.cb.activeDescendant &&
+                      dc.loaded
+                    ) {
                       if (dc.cb.sIndex > 0) dc.cb.sIndex--;
                       else dc.cb.sIndex = dc.cb.matches.length - 1;
                       $A.setAttr(
@@ -703,7 +711,7 @@ export function loadAccComboboxModule() {
                         that
                       );
                       ev.preventDefault();
-                    } else if (k == 27 || k == 37 || k == 39) {
+                    } else if (k === 27 || k === 37 || k === 39) {
                       $A.setAttr(e, {
                         "aria-activedescendant": ""
                       });
@@ -714,11 +722,11 @@ export function loadAccComboboxModule() {
                         dc.activeClass
                       );
 
-                      if (k == 27) that.close();
+                      if (k === 27) that.close();
                     } else if (
                       !dc.cb.readonly &&
-                      k != 9 &&
-                      !(k == 9 && ev.shiftKey)
+                      k !== 9 &&
+                      !(k === 9 && ev.shiftKey)
                     ) {
                       if (dc.cb.isInput) dc.cb.value = e.value;
                       var x = dc.cb.fn.checkValue(dc.cb.value);
@@ -744,7 +752,7 @@ export function loadAccComboboxModule() {
                           if (skp) {
                             if (
                               !dc.cb.pValue ||
-                              dc.cb.pValue.length != combobox.value.length
+                              dc.cb.pValue.length !== combobox.value.length
                             ) {
                               dc.cb.pValue = combobox.value;
                               skp = false;
@@ -834,12 +842,12 @@ export function loadAccComboboxModule() {
                   o = dc.cb.options[dc.cb.matches[0]].o,
                   h = $A.elementHeight(o);
                 h +=
-                  parseInt($A.css(o, "margin-top")) +
-                  parseInt($A.css(o, "margin-bottom"));
+                  parseInt($A.css(o, "margin-top"), 10) +
+                  parseInt($A.css(o, "margin-bottom"), 10);
                 h =
                   s * h +
-                  (parseInt($A.css(dc.source, "padding-top")) +
-                    parseInt($A.css(dc.source, "padding-bottom")));
+                  (parseInt($A.css(dc.source, "padding-top"), 10) +
+                    parseInt($A.css(dc.source, "padding-bottom"), 10));
                 $A.css(dc.source, "height", h);
               }
             }
@@ -889,7 +897,7 @@ export function loadAccComboboxModule() {
                       $A.setAttr(
                         o,
                         "aria-checked",
-                        $A.getAttr(o, "aria-checked") == "true"
+                        $A.getAttr(o, "aria-checked") === "true"
                           ? "false"
                           : "true"
                       );
@@ -1028,7 +1036,7 @@ export function loadAccComboboxModule() {
         };
 
         that.setCharMin = function(v) {
-          if (typeof v == "number" && v >= 0) dc.cb.charMin = v;
+          if (typeof v === "number" && v >= 0) dc.cb.charMin = v;
         };
 
         that.setShowAll = function(v) {
@@ -1139,7 +1147,7 @@ export function loadAccComboboxModule() {
         };
 
         that.setMultipleDivider = function(fn) {
-          if (fn && typeof fn == "function") dc.cb.multipleDivider = fn;
+          if (fn && typeof fn === "function") dc.cb.multipleDivider = fn;
         };
 
         that.clearAll = function() {
@@ -1169,7 +1177,7 @@ export function loadAccComboboxModule() {
           dc.cb.fn.update();
 
           if (
-            document.activeElement == combobox &&
+            document.activeElement === combobox &&
             (dc.cb.readonly || dc.cb.value)
           ) {
             that.open();
@@ -1214,7 +1222,7 @@ export function loadAccComboboxModule() {
           var i = document.documentElement.scrollLeft;
           o.scrollIntoView();
 
-          if (document.documentElement.scrollLeft != i)
+          if (document.documentElement.scrollLeft !== i)
             document.documentElement.scrollLeft = i;
         };
 

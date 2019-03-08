@@ -5,7 +5,7 @@ class Slide4 extends React.Component {
     return (
       <div class="slide slide4">
         <img
-          src="img/music/ar_no_s.jpg"
+          src={require("./img/music/ar_no_s.jpg")}
           alt="New Order - Substance"
           title="New Order - Substance"
         />

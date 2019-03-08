@@ -15,7 +15,7 @@ export function vARIA() {
     // When useOffline=true, the roles.css file must be manually added to provide visual feedback within the same document where roles.js is being processed.
     var useOffline = false,
       // Base path for dynamic loading of individual CSS files.
-      basePath = "https://accdc.github.io/visual-aria/visual-aria/public/",
+      basePath = "/visual-aria/public/",
       // Set millisecond interval for dynamically loading supporting CSS files and performing the naming calculation for widget roles
       msInterval = 2000;
 
@@ -425,7 +425,7 @@ export function vARIA() {
         for (var aN = 0; aN < accNames.length; aN++) {
           calcNames(
             accNames[aN],
-            function(node, props) {
+            function(props, node) {
               if (
                 " input textarea img progress ".indexOf(
                   " " + node.nodeName.toLowerCase() + " "

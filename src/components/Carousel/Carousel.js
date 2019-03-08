@@ -1,6 +1,61 @@
 import React from "react";
 import strap from "../../AccDC/DC";
 
+/* Directions for Accessible Carousels
+
+1. Import AccDC/DC.
+
+2. Import or create named React components to render carousel slide content.
+
+3. Designate an empty container element somewhere on the page where the Carousel React component slides will be inserted, and ensure it has a unique ID.
+
+4. Specify the details for each slide as specified when passed as an array to setCarousel(), and configure desired parameters.
+
+6. Configure supporting handlers using the Carousel object that is returned when setCarousel is invoked. (myCarousel = setCarousel())
+
+Carousel Object Methods
+
+References to 'Coords' refers to the array index values of [groupIndexVal, slideIndexVal], which starts at [0, 0] by default for the first slide in the first group.
+
+// Load the React slides and begin dynamic behaviors as configured.
+myCarousel.open(Coords);
+
+// Load the first slide in the previous group.
+myCarousel.previousGroup();
+
+// Load the first slide in the next group.
+myCarousel.nextGroup();
+
+// Load the previous slide.
+myCarousel.previousSlide();
+
+// Load the next slide.
+myCarousel.nextSlide();
+
+// Enable or disable automatic slide rotation. true or false
+myCarousel.enable(bool);
+
+// Temporarily enable or disable automatic slide rotation. true or false
+myCarousel.pause(bool);
+
+// Retern the current auto-rotation state, true if enabled, false if stopped or paused.
+var myState = myCarousel.state();
+
+// Perform a specific function using the current state with more precise handling.
+myCarousel.state(function(isStopped, isPaused) {
+  // Do something.
+});
+
+// Bind specific Coords to a DOM element or string ID.
+myCarousel.bind(domElementOrStringID, Coords);
+
+// Load the slide Coords that are bound to a specific DOM element or string ID.
+myCarousel.load(domElementOrStringID);
+
+// Destroy the Carousel construct, including all DC objects and stored data.
+myCarousel.destroy();
+*/
+
 import AltSlide1 from "./Alternative/Slide1";
 import AltSlide2 from "./Alternative/Slide2";
 import AltSlide3 from "./Alternative/Slide3";
@@ -88,7 +143,7 @@ class Carousel extends React.Component {
               title: stateMsg,
               "aria-label": stateMsg
             })
-            .toggleClass(isStopped, "stopped")
+            .toggleClass("stopped", isStopped)
             .mount(
               isStopped
                 ? '<span aria-hidden="true">O</span>'
@@ -113,9 +168,11 @@ class Carousel extends React.Component {
       nodes: navBtnContainer.childNodes,
       orientation: 1,
       autoLoop: true,
-      onClick: function(ev, target, rtiObj) {
-        carousel.load(target.id);
-        $A("#carouselWindowId").focus();
+      onOpen: function(ev, target, rtiObj, childRTI, wasTriggeredWithArrowKey) {
+        if (!wasTriggeredWithArrowKey) {
+          carousel.load(target.id);
+          $A("#carouselWindowId").focus();
+        }
       },
       onSpace: function(ev, target, rtiObj) {
         carousel.load(target.id);

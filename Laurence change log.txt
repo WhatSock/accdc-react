@@ -1,0 +1,26 @@
+Laurence change log:
+
+Date: 8 March 2019 9:15PM
+
+Component change: Calendar
+Issue fixed: calendar positioning
+
+Files changed:
+CalendarMain.js
+Change:
+Replaced <p> wrapper with <div class="insertCalendar">
+
+File changed:
+src/css/calendar.css
+Change
+Added:
+div.insertCalendar {
+    position: relative;
+}
+Updated
+div.calendar {
+  position: fixed; to
+
+div.calendar {
+  position: absolute;
+
