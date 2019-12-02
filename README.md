@@ -68,13 +68,20 @@ Getting Started
 
 If you are unfamiliar with React, none of what this project looks like will make much sense, so please read the following resource before trying to figure it out.
 https://reactjs.org/tutorial/tutorial.html
-Specifically, make sure you have Node.JS installed.
+Specifically, make sure you have Node.JS and NPM installed.
 https://nodejs.org/en/
 
-Next, simply download or clone this project, and follow the instructions documented within the file: "Help\How to Install.txt".
+Next, simply download or clone this project:
 
-Finally, just activate the batch file "RunWebServer.bat" by clicking it, or by running the command "npm start" from within the command prompt for the project root directory.
+`git clone https://github.com/WhatSock/accdc-react.git`
 
+Once all the files have been downloaded, run:
+
+`npm install`
+
+Finally, to start the local server, run:
+
+`npm start`
 To close the development server, set focus to the NPM window, then press Ctrl+C.
 
 Distributed under the terms of the Open Source Initiative OSI - MIT License.
