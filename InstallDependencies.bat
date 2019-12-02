@@ -1,7 +1,0 @@
-(call npm install --global prettier)
-(call npm -g install --global js-beautify)
-(call npm install react-html-parser)
-(call npm i bean)
-(call npm install node-fetch --save)
-(call npm install zenscroll)
-(call npm install current-device)

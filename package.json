@@ -23,6 +23,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "format-prettier": "prettier --write ./src/**/*.{js,css,json}",
+    "format-html": "js-beautify -r --type='html' ./public/index.html",
+    "format": "npm run format-prettier && npm run format-html",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
