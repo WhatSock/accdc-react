@@ -14,7 +14,7 @@ Distributed under the terms of the Open Source Initiative OSI - MIT License
     window[nameSpace] = {};
     nameSpace = window[nameSpace];
   }
-  nameSpace.getAccNameVersion = "2.39";
+  nameSpace.getAccNameVersion = "2.41";
   // AccName Computation Prototype
   nameSpace.getAccName = nameSpace.calcNames = function(
     node,
@@ -26,6 +26,7 @@ Distributed under the terms of the Open Source Initiative OSI - MIT License
     var docO = overrides.document || document;
     var props = { name: "", desc: "", error: "" };
     var nameFromPlaceholder = false;
+    var nameFromUserAgent = false;
     try {
       if (!node || node.nodeType !== 1) {
         return props;
@@ -507,21 +508,22 @@ Plus roles extended for the Role Parity project.
                     trim(node.getAttribute("value"))) ||
                   false;
 
-                var nAlt = rolePresentation
-                  ? ""
-                  : trim(node.alt || node.getAttribute("alt"));
+                var nAlt =
+                  rolePresentation && nTag === "img"
+                    ? ""
+                    : trim(node.alt || node.getAttribute("alt"));
 
-                // Otherwise, if name is still empty and current node is a standard non-presentational img or image button with a non-empty alt attribute, set alt attribute value as the accessible name.
+                // Otherwise, if name is still empty and current node is a standard non-presentational img or image button with a non-empty alt or title attribute, set alt or title attribute value as the accessible name.
                 if (
                   !skipTo.tag &&
                   !skipTo.role &&
                   !hasName &&
                   !rolePresentation &&
                   (nTag === "img" || btnType === "image") &&
-                  nAlt
+                  (nAlt || trim(nTitle))
                 ) {
                   // Check for blank value, since whitespace chars alone are not valid as a name
-                  name = trim(nAlt);
+                  name = trim(nAlt) || trim(nTitle);
                   if (trim(name)) {
                     hasName = true;
                   }
@@ -568,14 +570,13 @@ Plus roles extended for the Role Parity project.
                   !hasName &&
                   node === refNode &&
                   btnType &&
-                  ["button", "image", "submit", "reset"].indexOf(btnType) !== -1
+                  ["button", "submit", "reset"].indexOf(btnType) !== -1
                 ) {
                   if (btnValue) {
                     name = btnValue;
                   } else {
                     switch (btnType) {
                       case "submit":
-                      case "image":
                         name = "submit";
                         break;
                       case "reset":
@@ -603,6 +604,20 @@ Plus roles extended for the Role Parity project.
                 ) {
                   result.desc = btnValue;
                   hasDesc = true;
+                }
+
+                // Process the accessible names for native HTML image buttons
+                if (
+                  !skipTo.tag &&
+                  !skipTo.role &&
+                  !hasName &&
+                  node === refNode &&
+                  btnType &&
+                  btnType === "image"
+                ) {
+                  name = "Submit Query";
+                  hasName = true;
+                  nameFromUserAgent = true;
                 }
 
                 var isFieldset =
@@ -1558,6 +1573,7 @@ Plus roles extended for the Role Parity project.
       props.error = e;
     }
     props.placeholder = nameFromPlaceholder;
+    props.userAgent = nameFromUserAgent;
 
     if (fnc && typeof fnc === "function") {
       return fnc.apply(node, [props, node]);
@@ -1583,6 +1599,7 @@ Plus roles extended for the Role Parity project.
     var r =
       'accName: "' + props.name + '"\n\naccDesc: "' + props.desc + '"\n\n';
     if (props.placeholder) r += "Name from placeholder: true\n\n";
+    if (props.userAgent) r += "Name from user agent: true\n\n";
     r +=
       "(Running AccName Computation Prototype version: " +
       nameSpace.getAccNameVersion +
