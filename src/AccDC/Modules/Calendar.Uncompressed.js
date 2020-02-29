@@ -1,6 +1,7 @@
 /*!
-Accessible Calendar Module 3.4 - Minimum requirement: AccDC4X V. 4.2019.0
-Copyright 2019 Bryan Garaventa (WhatSock.com)
+Accessible Calendar Module 4.1 - Minimum requirement: AccDC4X V. 4.2019.0
+https://github.com/whatsock/accdc-react
+Copyright 2020 Bryan Garaventa (WhatSock.com)
 Refactoring Contributions Copyright 2018 Danny Allen (dannya.com) / Wonderscore Ltd (wonderscore.co.uk)
 Part of AccDC, a Cross-Browser JavaScript accessibility API, distributed under the terms of the Open Source Initiative OSI - MIT License
 */
@@ -95,9 +96,10 @@ export function loadAccCalendarModule() {
               offsetLeft: isNaN(config.offsetLeft) ? 0 : config.offsetLeft,
               posAnchor: config.posAnchor,
               targetObj: config.targetObj,
-              inputDateFormat: config.inputDateFormat || "dddd MMMM D, YYYY",
-              audibleDateFormat:
-                config.audibleDateFormat || "D, dddd MMMM YYYY",
+              // Mod:12/2019
+              // inputDateFormat: config.inputDateFormat || "dddd MMMM D, YYYY",
+              inputDateFormat: config.inputDateFormat || "MM/DD/YYYY",
+              audibleDateFormat: config.audibleDateFormat || "dddd D MMMM YYYY",
               initialDate:
                 config.initialDate instanceof Date
                   ? config.initialDate
@@ -446,19 +448,31 @@ export function loadAccCalendarModule() {
                 if (!s) {
                   if (dc.navBtn === "PM") {
                     dc.buttons.pM.focus();
-                    $A.announce(dc.range[dc.range.current.month].name);
+                    // Mod:12/2019
+                    $A.announce(
+                      dc.range[dc.range.current.month].name,
+                      false,
+                      true
+                    );
                     dc.navBtnS = true;
                   } else if (dc.navBtn === "NM") {
                     dc.buttons.nM.focus();
-                    $A.announce(dc.range[dc.range.current.month].name);
+                    // Mod:12/2019
+                    $A.announce(
+                      dc.range[dc.range.current.month].name,
+                      false,
+                      true
+                    );
                     dc.navBtnS = true;
                   } else if (dc.navBtn === "PY") {
                     dc.buttons.pY.focus();
-                    $A.announce(dc.range.current.year.toString());
+                    // Mod:12/2019
+                    $A.announce(dc.range.current.year.toString(), false, true);
                     dc.navBtnS = true;
                   } else if (dc.navBtn === "NY") {
                     dc.buttons.nY.focus();
-                    $A.announce(dc.range.current.year.toString());
+                    // Mod:12/2019
+                    $A.announce(dc.range.current.year.toString(), false, true);
                     dc.navBtnS = true;
                   } else {
                     // Toggles for openOnFocus support.
@@ -867,7 +881,21 @@ export function loadAccCalendarModule() {
                   dc.setDate(dc);
                 }
               },
+              // Mod:12/2019
+              rerenderTable: function(dc) {
+                dc.rerendering = true;
+                dc.runAfterClose(dc);
+                dc.runBefore(dc);
+                dc.runDuring(dc);
+                dc.runAfter(dc);
+                dc.rerendering = false;
+              },
               runBefore: function(dc) {
+                // Mod:12/2019
+                if (!dc.rerendering && targ.value) {
+                  dc.presetDate(dc, new Date(targ.value));
+                }
+
                 // Run custom specified function?
                 if (typeof config.runBefore === "function") {
                   config.runBefore(dc);
@@ -1058,7 +1086,8 @@ export function loadAccCalendarModule() {
                   '<table role="presentation" class="calendar">' +
                   yearSelector +
                   monthSelector +
-                  '<tr role="presentation">';
+                  '<tr role="presentation" aria-hidden="true">'; // Mod:12/2019
+
                 dc.iter = 0;
 
                 // Draw day headers
@@ -1181,20 +1210,37 @@ export function loadAccCalendarModule() {
                 }
                 dc.source += "</tr></table>";
 
+                // Mod:12/2019
+                dc.messageContainer = $A.createEl(
+                  "div",
+                  {
+                    id: $A.genId()
+                  },
+                  {},
+                  "monthMessage"
+                );
                 // if a message is set for the month, draw it
                 if (
                   dc.range[dc.range.current.month].message[
                     dc.range.current.year
                   ]
                 ) {
-                  dc.source +=
-                    '<div class="monthMessage">' +
-                    "	<p>" +
+                  dc.messageContainer.innerHTML =
+                    "<p>" +
                     dc.range[dc.range.current.month].message[
                       dc.range.current.year
                     ] +
-                    "</p>" +
-                    "</div>";
+                    "</p>";
+                  $A.setAttr(
+                    dc.container,
+                    "aria-labelledby",
+                    dc.monthCellId + " " + dc.messageContainer.id
+                  );
+                } else {
+                  if (!triggeredByTouch)
+                    dc.messageContainer.innerHTML =
+                      "<p>" + dc.helpTextShort + "</p>";
+                  $A.remAttr(dc.container, "aria-labelledby");
                 }
 
                 // Reconfigured for Esc btn processing
@@ -1217,25 +1263,43 @@ export function loadAccCalendarModule() {
               keyDown: function(ev, dc) {
                 var k = ev.which || ev.keyCode;
 
-                if (k === 72) {
-                  $A.announce(dc.helpText);
+                // Mod:12/2019
+                if (k === 112) {
+                  $A.remAttr(dc.container, "aria-labelledby");
+                  dc.container.appendChild(dc.messageContainer);
+                  $A.setAttr(dc.messageContainer, {
+                    role: "alert"
+                  });
+                  if (!triggeredByTouch)
+                    dc.messageContainer.innerHTML =
+                      "<p>" + dc.helpText + "</p>";
                   ev.preventDefault();
                   ev.stopPropagation();
                 }
               },
               runDuring: function(dc) {
-                dc.datepickerLoaded = false;
+                // Mod:12/2019
+                if (dc.rerendering) {
+                  dc.container.innerHTML = dc.source;
+                } else {
+                  dc.datepickerLoaded = false;
 
-                $A.setAttr(dc.outerNode, {
-                  role: "dialog",
-                  "data-helptext": dc.helpText,
-                  "aria-label": dc.range[dc.range.current.month].name
-                });
+                  $A.setAttr(dc.outerNode, {
+                    role: "dialog",
+                    // Mod:12/2019
+                    "aria-label": dc.role,
+                    title: !triggeredByTouch ? dc.helpTextShort : ""
+                  });
 
-                // Reconfigured for Esc btn processing
-                $A.setAttr(dc.container, {
-                  role: "application"
-                });
+                  // Reconfigured for Esc btn processing
+                  $A.setAttr(dc.container, {
+                    role: "application"
+                  });
+                }
+
+                if (dc.messageContainer.innerHTML) {
+                  dc.container.appendChild(dc.messageContainer);
+                }
 
                 // Reconfigured for Esc btn processing
                 if (dc.showEscBtn) {
@@ -1319,7 +1383,8 @@ export function loadAccCalendarModule() {
 
                     dc.setCurrent(dc);
                     dc.reopen = true;
-                    dc.open();
+                    // Mod:12/2019 dc.open();
+                    dc.rerenderTable(dc);
                   },
                   pMonth = function() {
                     if (
@@ -1371,7 +1436,8 @@ export function loadAccCalendarModule() {
 
                     dc.setCurrent(dc);
                     dc.reopen = true;
-                    dc.open();
+                    // Mod:12/2019 dc.open();
+                    dc.rerenderTable(dc);
                   },
                   gYear = function(forward) {
                     if (
@@ -1413,7 +1479,8 @@ export function loadAccCalendarModule() {
                     dc.date = intendedDate;
                     dc.setCurrent(dc);
                     dc.reopen = true;
-                    dc.open();
+                    // Mod:12/2019 dc.open();
+                    dc.rerenderTable(dc);
                   };
                 var isKP = false;
                 $A.on(
@@ -1590,7 +1657,8 @@ export function loadAccCalendarModule() {
                             );
                             dc.setCurrent(dc);
                             dc.reopen = true;
-                            dc.open();
+                            // Mod:12/2019 dc.open();
+                            dc.rerenderTable(dc);
                           }
                         } else if (k === 39) {
                           // Right arrow key
@@ -1629,7 +1697,8 @@ export function loadAccCalendarModule() {
                             );
                             dc.setCurrent(dc);
                             dc.reopen = true;
-                            dc.open();
+                            // Mod:12/2019 dc.open();
+                            dc.rerenderTable(dc);
                           }
                         } else if (k === 38) {
                           // Up arrow key
@@ -1677,7 +1746,8 @@ export function loadAccCalendarModule() {
                               dc.date = intendedDate;
                               dc.setCurrent(dc);
                               dc.reopen = true;
-                              dc.open();
+                              // Mod:12/2019 dc.open();
+                              dc.rerenderTable(dc);
                             }
                           }
                         } else if (k === 40) {
@@ -1722,7 +1792,8 @@ export function loadAccCalendarModule() {
                               dc.date = intendedDate;
                               dc.setCurrent(dc);
                               dc.reopen = true;
-                              dc.open();
+                              // Mod:12/2019 dc.open();
+                              dc.rerenderTable(dc);
                             }
                           }
                         } else if (k === 27) {
@@ -2247,31 +2318,21 @@ export function loadAccCalendarModule() {
                 if (commentsEnabled && config.editor && config.editor.show)
                   dc.children[1].open();
 
-                if (dc.openOnFocus) $A.setAttr(targ, "aria-expanded", "true");
-                $A.setAttr(dc.triggerObj, "aria-expanded", "true");
-                setTimeout(function() {
-                  dc.datepickerLoaded = true;
-                }, 750);
+                // Mod:12/2019 Removed
 
-                if (!dc.navBtnS) {
-                  if (!$A.isTouch()) {
-                    // Toggles for openOnFocus support.
-                    if (
-                      !config.openOnFocus ||
-                      (config.openOnFocus === true &&
-                        !onFocusInit &&
-                        onFocusTraverse)
-                    ) {
-                      if (!dc.setFocus.firstOpen) $A.announce(dc.helpTextShort);
-                    }
-                  }
+                if (!dc.rerendering) {
+                  if (dc.openOnFocus) $A.setAttr(targ, "aria-expanded", "true");
+                  $A.setAttr(dc.triggerObj, "aria-expanded", "true");
+                  setTimeout(function() {
+                    dc.datepickerLoaded = true;
+                  }, 750);
                 }
-                dc.navBtnS = false;
               },
               helpTextShort: helpTextShort,
               helpText: helpText,
               runAfterClose: function(dc) {
-                if (!dc.reopen) {
+                // Mod:12/2019
+                if (!dc.rerendering) {
                   if (config.resetCurrent) {
                     dc.date = new Date();
                     dc.setCurrent(dc);
@@ -2284,7 +2345,7 @@ export function loadAccCalendarModule() {
                     dc.children[1].lock = false;
                     dc.children[1].close();
                   }
-                } else dc.reopen = false;
+                }
 
                 if (config.ajax && typeof config.ajax === "function")
                   dc.lock = dc.ajaxLoading = false;
@@ -2297,6 +2358,7 @@ export function loadAccCalendarModule() {
                 if (typeof config.runAfterClose === "function") {
                   config.runAfterClose(dc);
                 }
+                dc.reopen = false;
               }
             }
           ],
@@ -2677,6 +2739,8 @@ export function loadAccCalendarModule() {
           "." + baseId
         );
 
+        var triggeredByTouch = false;
+
         // Toggles for openOnFocus support.
         if (config.openOnFocus === true) {
           $A.setAttr(targ, "aria-expanded", "false");
@@ -2685,6 +2749,7 @@ export function loadAccCalendarModule() {
             targ,
             {
               touchstart: function(ev) {
+                triggeredByTouch = true;
                 if (
                   !odcDel &&
                   !odc.loaded &&
@@ -2700,6 +2765,7 @@ export function loadAccCalendarModule() {
               },
               focus: function(ev) {
                 if (
+                  triggeredByTouch &&
                   !odcDel &&
                   !odc.loaded &&
                   !onFocusInit &&
@@ -2708,7 +2774,7 @@ export function loadAccCalendarModule() {
                 ) {
                   odcDel = true;
                   $A.trigger(trigger, "opendatepicker");
-                  $A.announce(odc.openOnFocusHelpText);
+                  if (!triggeredByTouch) $A.announce(odc.openOnFocusHelpText);
                   setTimeout(odcDelFn, 1000);
                 }
                 onFocusInit = true;
@@ -2727,7 +2793,7 @@ export function loadAccCalendarModule() {
                   onFocusInit = false;
                   onFocusTraverse = true;
                   odc.setFocus(odc.range.index[odc.range.current.mDay - 1]);
-                  $A.announce(odc.helpTextShort);
+                  // Mod:12/2019 $A.announce(odc.helpTextShort);
                   ev.preventDefault();
                   ev.stopPropagation();
                 } else if (
@@ -2744,7 +2810,7 @@ export function loadAccCalendarModule() {
                   onFocusInit = false;
                   onFocusTraverse = true;
                   odc.setFocus(odc.range.index[odc.range.current.mDay - 1]);
-                  $A.announce(odc.helpTextShort);
+                  // Mod:12/2019 $A.announce(odc.helpTextShort);
                   ev.preventDefault();
                   ev.stopPropagation();
                 } else if (
@@ -2787,6 +2853,28 @@ export function loadAccCalendarModule() {
             null,
             "." + baseId
           );
+        } else {
+          $A.on(targ, {
+            touchstart: function(ev) {
+              triggeredByTouch = true;
+            },
+            focus: function(ev) {
+              if (
+                triggeredByTouch &&
+                !odcDel &&
+                !odc.loaded &&
+                !onFocusInit &&
+                onFocusTraverse
+              ) {
+                ev.preventDefault();
+                this.blur();
+                if (trigger) $A.setFocus(trigger);
+              }
+
+              onFocusInit = true;
+              onFocusTraverse = false;
+            }
+          });
         }
 
         odc.setDisabled(odc, odc.disabled);
