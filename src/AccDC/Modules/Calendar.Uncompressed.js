@@ -1,5 +1,5 @@
 /*!
-Accessible Calendar Module 4.1 - Minimum requirement: AccDC4X V. 4.2019.0
+Accessible Calendar Module 4.2 - Minimum requirement: AccDC4X V. 4.2019.0
 https://github.com/whatsock/accdc-react
 Copyright 2020 Bryan Garaventa (WhatSock.com)
 Refactoring Contributions Copyright 2018 Danny Allen (dannya.com) / Wonderscore Ltd (wonderscore.co.uk)
@@ -22,7 +22,7 @@ export function loadAccCalendarModule() {
         var config = config || {},
           helpTextShort = config.helpTextShort
             ? config.helpTextShort
-            : "Press H for help.",
+            : "Press F1 for help.",
           helpText = config.helpText
             ? config.helpText
             : "Press the arrow keys to navigate by day, PageUp and PageDown to navigate by month, Alt+PageUp and Alt+PageDown to navigate by year, or Escape to cancel.",
