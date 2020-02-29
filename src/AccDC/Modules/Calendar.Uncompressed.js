@@ -998,7 +998,7 @@ export function loadAccCalendarModule() {
                     '" colspan="5" class="year" role="presentation"><span>' +
                     dc.range.current.year +
                     "</span></td>" +
-                    '<td class="nav next nav prev btn' +
+                    '<td class="nav next btn year' +
                     (!hasNextYear ? " disabled" : "") +
                     '" accesskey="2" title="' +
                     dc.nextTxt.replace(/<|>|\"/g, "") +
