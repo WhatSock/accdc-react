@@ -1,5 +1,5 @@
 /*!
-Accessible Calendar Module 4.2 - Minimum requirement: AccDC4X V. 4.2019.0
+Accessible Calendar Module 4.3 - Minimum requirement: AccDC4X V. 4.2019.0
 https://github.com/whatsock/accdc-react
 Copyright 2020 Bryan Garaventa (WhatSock.com)
 Refactoring Contributions Copyright 2018 Danny Allen (dannya.com) / Wonderscore Ltd (wonderscore.co.uk)
@@ -1256,6 +1256,12 @@ export function loadAccCalendarModule() {
                     dc.escBtnIcon +
                     "</button>";
                 }
+              },
+              mouseEnter: function(ev, dc) {
+                dc.mouseWithin = true;
+              },
+              mouseLeave: function(ev, dc) {
+                dc.mouseWithin = false;
               },
               click: function(ev, dc) {
                 ev.stopPropagation();
@@ -2546,16 +2552,18 @@ export function loadAccCalendarModule() {
 
                   dc.css("left", dc.parent.outerNode.offsetLeft);
                 }
-                $A.setAttr(dc.textarea, {
-                  title:
-                    dc.parent.range.current.mDay +
-                    ", " +
-                    dc.parent.range.wDays[dc.parent.range.current.wDay].lng +
-                    " " +
-                    dc.parent.range[dc.parent.range.current.month].name +
-                    " " +
-                    dc.parent.range.current.year
-                }).focus();
+                $A
+                  .setAttr(dc.textarea, {
+                    title:
+                      dc.parent.range.current.mDay +
+                      ", " +
+                      dc.parent.range.wDays[dc.parent.range.current.wDay].lng +
+                      " " +
+                      dc.parent.range[dc.parent.range.current.month].name +
+                      " " +
+                      dc.parent.range.current.year
+                  })
+                  .focus();
 
                 if (
                   dc.comments[dc.parent.range.current.year] &&
@@ -2594,7 +2602,8 @@ export function loadAccCalendarModule() {
                     ((config.editor && config.editor.role) || "Edit") +
                     " " +
                     $A.reg.get(pId + "commentTooltip").role
-                }).innerHTML = (config.editor && config.editor.role) || "Edit";
+                }).innerHTML =
+                  (config.editor && config.editor.role) || "Edit";
               }
             },
             runAfter: function(dc) {
@@ -2769,6 +2778,15 @@ export function loadAccCalendarModule() {
                   !odcDel &&
                   !odc.loaded &&
                   !onFocusInit &&
+                  onFocusTraverse
+                ) {
+                  ev.preventDefault();
+                  this.blur();
+                  if (trigger) $A.setFocus(trigger);
+                } else if (
+                  !odcDel &&
+                  !odc.loaded &&
+                  !onFocusInit &&
                   !onFocusTraverse &&
                   !odc.disabled
                 ) {
@@ -2780,8 +2798,18 @@ export function loadAccCalendarModule() {
                 onFocusInit = true;
                 onFocusTraverse = false;
               },
+              mousedown: function(ev) {
+                this.blur();
+                onFocusInit = onFocusTraverse = false;
+                this.focus();
+              },
               blur: function(ev) {
-                if (odc.loaded && onFocusInit && !onFocusTraverse) {
+                if (
+                  odc.loaded &&
+                  onFocusInit &&
+                  !onFocusTraverse &&
+                  !odc.mouseWithin
+                ) {
                   odc.close();
                 }
                 onFocusInit = false;

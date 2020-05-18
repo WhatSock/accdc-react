@@ -6,6 +6,7 @@ http://www.w3.org/TR/accname-aam-1.1/
 Authored by Bryan Garaventa, plus refactoring contrabutions by Tobias Bengfort
 https://github.com/whatsock/w3c-alternative-text-computation
 Distributed under the terms of the Open Source Initiative OSI - MIT License
+11:33 AM Thursday, May 7, 2020
 */
 
 (function() {
@@ -14,7 +15,7 @@ Distributed under the terms of the Open Source Initiative OSI - MIT License
     window[nameSpace] = {};
     nameSpace = window[nameSpace];
   }
-  nameSpace.getAccNameVersion = "2.41";
+  nameSpace.getAccNameVersion = "2.49";
   // AccName Computation Prototype
   nameSpace.getAccName = nameSpace.calcNames = function(
     node,
@@ -56,6 +57,7 @@ Distributed under the terms of the Open Source Initiative OSI - MIT License
           name: "",
           title: ""
         };
+        var hasLabel = false;
 
         /*
   ARIA Role Exception Rule Set 1.1
@@ -99,15 +101,12 @@ Plus roles extended for the Role Parity project.
             }
           }
           // Otherwise process list2 to identify roles to ignore processing name from content.
-          else if (
-            (inList(node, list2) ||
-              (node === rootNode && !inList(node, list1))) &&
-            !skipTo.go
-          ) {
-            return true;
-          } else {
-            return false;
-          }
+          else
+            return !!(
+              (inList(node, list2) ||
+                (node === rootNode && !inList(node, list1))) &&
+              !skipTo.go
+            );
         };
 
         var inParent = function(node, parent) {
@@ -138,16 +137,6 @@ Plus roles extended for the Role Parity project.
           before: "",
           after: ""
         };
-
-        if (ownedBy.ref) {
-          if (isParentHidden(refNode, docO.body, true, true)) {
-            // If referenced via aria-labelledby or aria-describedby, do not return a name or description if a parent node is hidden.
-            return fullResult;
-          } else if (isHidden(refNode, docO.body)) {
-            // Otherwise, if aria-labelledby or aria-describedby reference a node that is explicitly hidden, then process all children regardless of their individual hidden states.
-            var ignoreHidden = true;
-          }
-        }
 
         if (!skipTo.tag && !skipTo.role && nodes.indexOf(refNode) === -1) {
           // Store the before and after pseudo element 'content' values for the top level DOM node
@@ -180,10 +169,11 @@ Plus roles extended for the Role Parity project.
           if (!node) {
             return res;
           }
-          var nodeIsBlock =
-            node && node.nodeType === 1 && isBlockLevelElement(node)
-              ? true
-              : false;
+          var nodeIsBlock = !!(
+            node &&
+            node.nodeType === 1 &&
+            isBlockLevelElement(node)
+          );
           var currentNode = node;
           var fResult = fn(node) || {};
           if (fResult.name && fResult.name.length) {
@@ -254,7 +244,7 @@ Plus roles extended for the Role Parity project.
               owns: "",
               skip: false
             };
-            var isEmbeddedNode =
+            var isEmbeddedNode = !!(
               node &&
               node.nodeType === 1 &&
               nodesToIgnoreValues &&
@@ -262,23 +252,23 @@ Plus roles extended for the Role Parity project.
               nodesToIgnoreValues.indexOf(node) !== -1 &&
               node === rootNode &&
               node !== refNode
-                ? true
-                : false;
+            );
+            var hLabel = false;
 
             if (
-              (skip ||
-                !node ||
-                nodes.indexOf(node) !== -1 ||
-                (!ignoreHidden && isHidden(node, ownedBy.top))) &&
+              (skip || !node || isHidden(node, ownedBy.top)) &&
               !skipAbort &&
               !isEmbeddedNode
             ) {
-              // Abort if algorithm step is already completed, or if node is a hidden child of refNode, or if this node has already been processed, or skip abort if aria-labelledby self references same node.
+              // Abort if algorithm step is already completed, or if node is a hidden child of refNode, or skip abort if aria-labelledby self references same node.
               return result;
             }
 
             if (!skipTo.tag && !skipTo.role && nodes.indexOf(node) === -1) {
               nodes.push(node);
+            } else {
+              // Abort if this node has already been processed.
+              return result;
             }
 
             // Store name for the current node.
@@ -357,7 +347,7 @@ Plus roles extended for the Role Parity project.
               var hasName = false;
               var hasDesc = false;
               var aOwns = node.getAttribute("aria-owns") || "";
-              var isSeparatChildFormField =
+              var isSeparatChildFormField = !!(
                 !skipTo.tag &&
                 !skipTo.role &&
                 !isEmbeddedNode &&
@@ -367,8 +357,7 @@ Plus roles extended for the Role Parity project.
                     ownedBy[node.id] &&
                     ownedBy[node.id].target &&
                     ownedBy[node.id].target === node))
-                  ? true
-                  : false;
+              );
 
               // Check for non-empty value of aria-describedby if current node equals reference node, follow each ID ref, then stop and process no deeper.
               if (
@@ -378,7 +367,7 @@ Plus roles extended for the Role Parity project.
                 !skipTo.role &&
                 aDescribedby
               ) {
-                var desc = "";
+                var desc;
                 ids = aDescribedby.split(/\s+/);
                 parts = [];
                 for (i = 0; i < ids.length; i++) {
@@ -419,6 +408,8 @@ Plus roles extended for the Role Parity project.
 
                 if (trim(name)) {
                   hasName = true;
+                  hLabel = true;
+                  hasLabel = true;
                   // Abort further recursion if name is valid.
                   result.skip = true;
                 }
@@ -437,9 +428,11 @@ Plus roles extended for the Role Parity project.
                 // Check for blank value, since whitespace chars alone are not valid as a name
                 if (trim(name)) {
                   hasName = true;
+                  hLabel = true;
                   if (node === refNode) {
                     // If name is non-empty and both the current and refObject nodes match, then don't process any deeper within the branch.
                     skip = true;
+                    hasLabel = true;
                   }
                 }
               }
@@ -451,9 +444,7 @@ Plus roles extended for the Role Parity project.
                 nRole &&
                 presentationRoles.indexOf(nRole) !== -1 &&
                 !isFocusable(node) &&
-                !hasGlobalAttr(node)
-                  ? true
-                  : false;
+                !hasGlobalAttr(node);
 
               // Otherwise, if the current node is not a nested widget control within the parent ref obj, but is instead a native markup element that includes a host-defined labelling mechanism, then set the name and description accordingly if present.
               if (!isSeparatChildFormField) {
@@ -473,7 +464,9 @@ Plus roles extended for the Role Parity project.
 
                   for (i = 0; i < labels.length; i++) {
                     if (
-                      (labels[i] === implicitLabel ||
+                      ((labels[i] === implicitLabel &&
+                        typeof implicitLabel.getAttribute("for") !==
+                          "string") ||
                         labels[i].getAttribute("for") === node.id) &&
                       !isParentHidden(labels[i], docO.body, true)
                     ) {
@@ -658,8 +651,7 @@ Plus roles extended for the Role Parity project.
                 // Otherwise, if name is still empty and the current node matches the root node and is a standard table element with a non-empty associated caption element as the first child node, process caption with same naming computation algorithm.
                 // Plus do the same for role="table" with embedded role="caption", or a combination of these.
                 if (isTable) {
-                  var fChild =
-                    firstChild(node, ["caption"], ["caption"]) || false;
+                  fChild = firstChild(node, ["caption"], ["caption"]) || false;
                   if (fChild) {
                     name = trim(
                       walk(fChild, stop, false, [], false, {
@@ -684,7 +676,7 @@ Plus roles extended for the Role Parity project.
                 // Otherwise, if name is still empty and the current node matches the root node and is a standard figure element with a non-empty associated figcaption element as the first or last child node, process caption with same naming computation algorithm.
                 // Plus do the same for role="figure" with embedded role="caption", or a combination of these.
                 if (isFigure) {
-                  var fChild =
+                  fChild =
                     firstChild(node, ["figcaption"], ["caption"]) ||
                     lastChild(node, ["figcaption"], ["caption"]) ||
                     false;
@@ -714,9 +706,6 @@ Plus roles extended for the Role Parity project.
                         top: svgT
                       }).name
                     );
-                    if (trim(name)) {
-                      hasName = true;
-                    }
                   }
                   if (!hasDesc && svgD) {
                     var dE = trim(
@@ -727,7 +716,6 @@ Plus roles extended for the Role Parity project.
                     );
                     if (trim(dE)) {
                       result.desc = dE;
-                      hasDesc = true;
                     }
                   }
                   result.skip = true;
@@ -791,10 +779,6 @@ Plus roles extended for the Role Parity project.
                   // Check for blank value, since whitespace chars alone are not valid as a name
                   name = trim(name);
                 }
-
-                if (trim(name)) {
-                  hasName = true;
-                }
               }
 
               // Otherwise, if current node is the same as rootNode and is non-presentational and includes a non-empty title attribute, store title attribute value as the accessible name if name is still empty, or the description if not.
@@ -849,7 +833,6 @@ Plus roles extended for the Role Parity project.
                   }).name
                 );
                 if (trim(name)) {
-                  hasName = true;
                   skip = true;
                 }
               }
@@ -891,12 +874,14 @@ Plus roles extended for the Role Parity project.
               name = node.data;
             }
 
-            // Prepend and append the current CSS pseudo element text, plus normalize all whitespace such as newline characters and others into flat spaces.
-            name = cssO.before + name.replace(/\s+/g, " ") + cssO.after;
+            if (!hLabel) {
+              // Prepend and append the current CSS pseudo element text, plus normalize all whitespace such as newline characters and others into flat spaces.
+              name = cssO.before + name.replace(/\s+/g, " ") + cssO.after;
+            }
 
             if (
               name.length &&
-              !hasParentLabelOrHidden(node, ownedBy.top, ownedBy, ignoreHidden)
+              !hasParentLabelOrHidden(node, ownedBy.top, ownedBy)
             ) {
               result.name = name;
             }
@@ -908,15 +893,17 @@ Plus roles extended for the Role Parity project.
           refNode
         );
 
-        // Prepend and append the refObj CSS pseudo element text, plus normalize whitespace chars into flat spaces.
-        fullResult.name =
-          cssOP.before + fullResult.name.replace(/\s+/g, " ") + cssOP.after;
+        if (!hasLabel) {
+          // Prepend and append the refObj CSS pseudo element text, plus normalize whitespace chars into flat spaces.
+          fullResult.name =
+            cssOP.before + fullResult.name.replace(/\s+/g, " ") + cssOP.after;
+        }
 
         return fullResult;
       };
 
       var firstChild = function(e, t, r, s) {
-        var e = e ? e.firstChild : null;
+        e = e ? e.firstChild : null;
         while (e) {
           var tr = getRole(e) || false;
           if (
@@ -935,7 +922,7 @@ Plus roles extended for the Role Parity project.
       };
 
       var lastChild = function(e, t, r, s) {
-        var e = e ? e.lastChild : null;
+        e = e ? e.lastChild : null;
         while (e) {
           var tr = getRole(e) || false;
           if (
@@ -985,13 +972,10 @@ Plus roles extended for the Role Parity project.
         if (nodeName === "a" && node.getAttribute("href")) {
           return true;
         }
-        if (
+        return (
           ["button", "input", "select", "textarea"].indexOf(nodeName) !== -1 &&
           node.getAttribute("type") !== "hidden"
-        ) {
-          return true;
-        }
-        return false;
+        );
       };
 
       // ARIA Role Exception Rule Set 1.1
@@ -1204,13 +1188,9 @@ Plus roles extended for the Role Parity project.
               return true;
             }
             var style = getStyleObject(node);
-            if (
-              style["display"] === "none" ||
-              style["visibility"] === "hidden"
-            ) {
-              return true;
-            }
-            return false;
+            return (
+              style["display"] === "none" || style["visibility"] === "hidden"
+            );
           };
           return hidden(node);
         };
@@ -1247,7 +1227,11 @@ Plus roles extended for the Role Parity project.
             s = s.replace(m[i], b);
           }
         }
-        return s || text;
+        s = s
+          .replace(/url\((.*?)\)\s+\/|url\((.*?)\)/g, "")
+          .replace(/^\s+|\s+$/g, "")
+          .replace(/\"/g, "");
+        return s;
       };
 
       var isBlockLevelElement = function(node, cssObj) {
@@ -1267,7 +1251,7 @@ Plus roles extended for the Role Parity project.
             }
           }
         }
-        if (
+        return (
           !cssObj &&
           node.nodeName &&
           blockElements.indexOf(node.nodeName.toLowerCase()) !== -1 &&
@@ -1276,10 +1260,7 @@ Plus roles extended for the Role Parity project.
             styleObject["display"].indexOf("inline") === 0 &&
             node.nodeName.toLowerCase() !== "br"
           )
-        ) {
-          return true;
-        }
-        return false;
+        );
       };
 
       // CSS Block Styles indexed from:
@@ -1483,7 +1464,7 @@ Plus roles extended for the Role Parity project.
         };
 
       var getParent = function(node, nTag, nRole, noRole) {
-        var noRole = noRole ? true : false;
+        noRole = !!noRole;
         while (node) {
           node = node.parentNode;
           if (
@@ -1544,9 +1525,7 @@ Plus roles extended for the Role Parity project.
           node,
           docO.body,
           true,
-          node && node.nodeName && node.nodeName.toLowerCase() === "area"
-            ? true
-            : false
+          !!(node && node.nodeName && node.nodeName.toLowerCase() === "area")
         )
       ) {
         return props;

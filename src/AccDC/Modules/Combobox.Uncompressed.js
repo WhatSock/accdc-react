@@ -109,8 +109,8 @@ export function loadAccComboboxModule() {
                     ? true
                     : false
                   : $A.getAttr(dc.triggerObj, "aria-required") === "true"
-                  ? true
-                  : false;
+                    ? true
+                    : false;
                 dc.cb.multiple = $A.getAttr(dc.cb.sel, "multiple")
                   ? true
                   : false;

@@ -44,6 +44,7 @@ class CalendarMain extends React.Component {
               readOnly="readonly"
               required="required"
               config={{
+                openOnFocus: true,
                 callback: function(event, DC, inputElement) {
                   // Perform a custom callback when a date is activated from the calendar instead of using the default module functionality.
                   // event is the event object that was passed to this callback, may be either from onClick or onKeyDown or onKeyUp.

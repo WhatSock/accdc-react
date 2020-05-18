@@ -446,8 +446,8 @@ export function $AccDC() {
               o && typeof o === "object" && o.nodeType && o.outerHTML
                 ? o.outerHTML
                 : o && typeof o === "object" && o.nodeType === 3 && o.data
-                ? o.data
-                : o
+                  ? o.data
+                  : o
             );
           }
           if (!$A.isReact(o)) {
@@ -834,7 +834,8 @@ error: function(error, promise){}
             load = function(url, data, success, error) {
               var options = config;
               $A.extend(options, data || {});
-              $A.fetch(url, options)
+              $A
+                .fetch(url, options)
                 .then(function(response) {
                   if (response.status >= 200 && response.status < 300) {
                     // text or html or xml
@@ -4149,9 +4150,9 @@ verticalStop: true or false
               aW = $A.elementWidth(dc.outerNode),
               aH = $A.elementHeight(dc.outerNode);
             var npw = 50;
-            if (bodyW > aW) npw = parseInt(((aW / bodyW) * 100) / 2, 10);
+            if (bodyW > aW) npw = parseInt(aW / bodyW * 100 / 2, 10);
             var nph = 50;
-            if (bodyH > aH) nph = parseInt(((aH / bodyH) * 100) / 2, 10);
+            if (bodyH > aH) nph = parseInt(aH / bodyH * 100 / 2, 10);
             switch (dc.autoFix) {
               case 1:
               case 5:
